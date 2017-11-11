@@ -1,9 +1,9 @@
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'	# dotfiles directory swap
 
 
-alias l='ls -CFh'		# Preferred 'ls' implementation
-alias ll='ls -FGlAhp'
-alias ls='ls -GFhl'
+alias l='ls -CFh --color=auto'		# Preferred 'ls' implementation
+alias ll='ls -FGlAhp --color=auto'
+alias ls='ls -GFhl --color=auto'
 alias cp='cp -iv'		# Preferred 'cp' implementation
 alias mv='mv -iv'		# Preferred 'mv' implementation
 alias mkdir='mkdir -pv'		# Preferred 'mkdir' implementation
