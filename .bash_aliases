@@ -12,7 +12,7 @@ alias less='less -FSRXc'	# Preferred 'less' implementation
 
 
 mcd() { mkdir -p "$1" && cd "$1"; }	# mcd: Makes new Dir and jumps inside
-cd() { builtin cd "$@"; ll; }		# Always list directory contents upon 'cd'
+cd() { builtin cd "$@"; l; }		# Always list directory contents upon 'cd'
 
 
 alias cd..='cd ../'			# Go back 1 directory level (for fast typers)
