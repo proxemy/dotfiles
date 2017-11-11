@@ -8,6 +8,11 @@
 """"""""""""""""""""""""""
 " Vundle - Plugin Manager
 """"""""""""""""""""""""""
+"
+" install vundle :
+" git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+"
+"
 set nocompatible	" be iMproved, required
 filetype off		" required
 
@@ -19,11 +24,15 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " Keep Plugin commands between vundle#begin/end.
-Plugin 'YouCompleteMe'
-Plugin 'powerline/powerline'
+" Plugin 'YouCompleteMe'
+" Plugin 'powerline/powerline'
 " Below is the new powerline plugin which will replace the above once its
 " finished
-"Plugin 'git://github.com/powerline/powerline'
+
+
+Plugin 'git://github.com/powerline/powerline'
+Plugin 'git://github.com/Valloric/YouCompleteMe'
+
 "Plugin 'vim-airline/vim-airline'	" lightweight alterniative to powerline
 
 " All of your Plugins must be added before the following line
