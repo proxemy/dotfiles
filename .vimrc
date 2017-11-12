@@ -82,8 +82,9 @@ set nowrap 			" disable line break
 
 " tabs and spaces
 set tabstop=4		" tabstop = tabwidth
-set shiftwidth=4	" one foldlevel = 4 chars (tab_size=8 wont fold properly)
-set softtabstop=0 noexpandtab
+"set shiftwidth=4	" one foldlevel = 4 chars (tab_size=8 wont fold properly)
+"set softtabstop=0
+set noexpandtab
 
 
 
