@@ -70,20 +70,38 @@ set more			" show '--more--' in listings
 " set eol				" puts an eol at the last line in file
 " set fixeol		" fix missing eol at the end of file
 set relativenumber	" relative line numbers
+
+
 "set foldmethod=syntax	" fold by syntax (only for C langs?)
 set foldmethod=indent	" fold by indentation
 set nofoldenable	" dont fold by default
 set foldcolumn=3	" shows a fold column on the lest (symbols: +. -, |)
+set fillchars=fold:\ " disable 'fillchars' in 'foldtext' lines
 
-set bs=2			" backspacing behaviour. 3 = backspace over indent, eol, start 
-set colorcolumn=79	" highlight column 79 to respect line length
+set bs=2		" backspacing behaviour. 2 = backspace over indent, eol, start 
 set showtabline=2	" always show tabbar
 set tabpagemax=10	" max tabs to show. use :next or :last to navigate to exceeding tabs
 set nowrap 			" disable line break
 "set sidescroll=10	" number of columns to scroll horizontally, good for slow terminals
-set sidescrolloff=999	" number of columns to keep on screen borders while horizontally scrolling
+set sidescrolloff=10	" number of columns to keep on screen borders while horizontally scrolling
+set scrolloff=3		" number of linse that will be kept while vertical scrolling
 
 
+
+" User interface
+set wildchar=<TAB>
+set wildmenu	" ':' menu with 'wildchar' (TAB)
+set wildmode=full
+
+" status line
+"set laststatus=2	" always show a status line
+"set statusline=
+"set statusline+=[%{winnr()}]\         " window number
+"set statusline+=[%{fugitive#head()}]\ " current git branch
+"set statusline+=%q%f\                 " quickfix label or filename
+"set statusline+=%m                    " modified flag
+"set statusline+=%=                    " split between left and right sides
+"set statusline+=%3l/%3L:%2c           " currentline/totallines:column
 
 
 
@@ -125,11 +143,26 @@ set list " display tab or eol chars
 """"""""""""""""""""""""""
 " only turn on colors if terminal supports it
 if &t_Co > 2 || has('gui_rendering')
-	highlight ColorColumn ctermbg=darkgray " colum delimiter color
-	set background=dark	" dark color scheme
+
+	" set the color column to show/delimit line length
+	if exists("&colorcolumn")
+		set colorcolumn=80
+		highlight ColorColumn ctermbg=LightGrey
+	endif
+	
+	" colors
+	set background=dark " dark color scheme
 	set hlsearch		" highlight search results
-	syntax on			" syntax highlighting
+	syntax enable			" syntax highlighting without overwriting existing settings
+
+	" custom highlighting
+	hi LineNr term=underline cterm=bold ctermfg=DarkYellow
+	hi Error term=underline cterm=underline ctermfg=Red ctermbg=0 guibg=Grey40
+	hi Folded term=underline cterm=underline ctermfg=DarkGrey ctermbg=DarkGrey
+	" highlight Boolean
+	" highlight 
 endif
+
 
 
 
@@ -140,9 +173,10 @@ endif
 "	MISC
 """"""""""""""""""""""""""
 
-" enalbe mouse
+" enalbe mouse fetures
 if has('mouse')
 	set mouse=a
+	set mousefocus
 endif
 
 
@@ -217,7 +251,7 @@ if has("autocmd")
   au!
 
   " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
+  autocmd FileType text setlocal textwidth=0
 
   " When editing a file, always jump to the last known cursor position.
   " Don't do it when the position is invalid or when inside an event handler
