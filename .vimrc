@@ -157,10 +157,13 @@ if &t_Co > 2 || has('gui_rendering')
 
 	" custom highlighting
 	hi LineNr term=underline cterm=bold ctermfg=DarkYellow
-	hi Error term=underline cterm=underline ctermfg=Red ctermbg=0 guibg=Grey40
+	hi Error term=underline cterm=underline ctermfg=Red guibg=Grey40
 	hi Folded term=underline cterm=underline ctermfg=DarkGrey ctermbg=DarkGrey
+	hi NonText term=bold cterm=bold ctermfg=DarkGrey guifg=DarkGrey
+	hi SpecialKey term=bold cterm=bold ctermfg=DarkGrey guifg=DarkGrey
 	" highlight Boolean
 	" highlight 
+	" Nonprintables als DarkGray bitte
 endif
 
 
