@@ -77,6 +77,7 @@ set foldmethod=indent	" fold by indentation
 set nofoldenable	" dont fold by default
 set foldcolumn=3	" shows a fold column on the lest (symbols: +. -, |)
 set fillchars=fold:\ " disable 'fillchars' in 'foldtext' lines
+set foldtext=\		" disable foldtext() method
 
 set bs=2		" backspacing behaviour. 2 = backspace over indent, eol, start 
 set showtabline=2	" always show tabbar
@@ -145,25 +146,25 @@ set list " display tab or eol chars
 if &t_Co > 2 || has('gui_rendering')
 
 	" set the color column to show/delimit line length
-	if exists("&colorcolumn")
-		set colorcolumn=80
-		highlight ColorColumn ctermbg=LightGrey
-	endif
-	
+	set colorcolumn=80
+	highlight ColorColumn ctermbg=LightGrey
+
 	" colors
 	set background=dark " dark color scheme
 	set hlsearch		" highlight search results
 	syntax enable			" syntax highlighting without overwriting existing settings
 
 	" custom highlighting
-	hi LineNr term=underline cterm=bold ctermfg=DarkYellow
-	hi Error term=underline cterm=underline ctermfg=Red guibg=Grey40
+	" with ':highlight', you can see all possible highlight-groups
+	hi LineNr term=bold cterm=bold ctermfg=DarkYellow
+	hi Comment ctermfg=DarkCyan
+	hi clear Error
+	hi Error term=underline cterm=underline ctermfg=Red 
 	hi Folded term=underline cterm=underline ctermfg=DarkGrey ctermbg=DarkGrey
-	hi NonText term=bold cterm=bold ctermfg=DarkGrey guifg=DarkGrey
-	hi SpecialKey term=bold cterm=bold ctermfg=DarkGrey guifg=DarkGrey
-	" highlight Boolean
-	" highlight 
-	" Nonprintables als DarkGray bitte
+	hi NonText term=bold cterm=bold ctermfg=DarkGrey
+	hi SpecialKey term=none cterm=none ctermfg=DarkGrey
+	hi clear Search
+	hi Search term=reverse cterm=reverse
 endif
 
 
