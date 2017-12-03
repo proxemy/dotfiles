@@ -32,6 +32,7 @@ Plugin 'VundleVim/Vundle.vim'
 " use :PluginInstall to install listed repos
 Plugin 'git://github.com/powerline/powerline'
 Plugin 'git://github.com/Valloric/YouCompleteMe'
+Plugin 'git://github.com/tpope/vim-surround'
 "Plugin 'vim-airline/vim-airline'	" lightweight alterniative to powerline
 
 " All of your Plugins must be added before the following line
