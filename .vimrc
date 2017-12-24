@@ -61,7 +61,8 @@ set smartindent		" yep, smartindet
 set history=200		" command and search history
 set undolevels=200	" undo levels
 set ruler			" show cursor position in the lower right
-set showcmd			" show command while typing 
+"set cursorline		" unterline/show the current cursorline
+set showcmd			" show command while typing
 " filetype plugin indent on	" recognizing file types, loads plugins (if exit) and detects indentation style
 "set spell			" spell checker (en)
 "set spl=en			" spell check language
@@ -71,6 +72,7 @@ set more			" show '--more--' in listings
 " set eol				" puts an eol at the last line in file
 " set fixeol		" fix missing eol at the end of file
 set relativenumber	" relative line numbers
+set hidden			" show hidden buffers
 
 
 "set foldmethod=syntax	" fold by syntax (only for C langs?)
@@ -79,11 +81,12 @@ set nofoldenable	" dont fold by default
 set foldcolumn=3	" shows a fold column on the lest (symbols: +. -, |)
 set fillchars=fold:\ " disable 'fillchars' in 'foldtext' lines
 set foldtext=\		" disable foldtext() method
+set formatoptions=jl	" Formating option, see :help fo-table for details
 
 set bs=2		" backspacing behaviour. 2 = backspace over indent, eol, start 
 set showtabline=2	" always show tabbar
 set tabpagemax=10	" max tabs to show. use :next or :last to navigate to exceeding tabs
-set nowrap 			" disable line break
+set nowrap			" disable line break
 "set sidescroll=10	" number of columns to scroll horizontally, good for slow terminals
 set sidescrolloff=10	" number of columns to keep on screen borders while horizontally scrolling
 set scrolloff=3		" number of linse that will be kept while vertical scrolling
@@ -126,15 +129,27 @@ set noswapfile
 " show tabs and eol as chars:
 " doesnt work propperly?
 scriptencoding utf-8
-set listchars=tab:▸\ ,eol:¬
-set list " display tab or eol chars
+set listchars=tab:▸\ ,eol:¬,trail:·
+set list " display non-printable characters as above
 
 
 
 
 
 
+" mark long lines and trialing white spaces as errors
+"match ErrorMsg '\%>120v.\+'
+"match ErrorMsg '\s\+$'
 
+
+
+" use enter/backspace in normal mode to move per paragraph
+nnoremap <BS> {
+onoremap <BS> {
+vnoremap <BS> {
+nnoremap <expr> <CR> empty(&buftype) ? '}' : '<CR>'
+onoremap <expr> <CR> empty(&buftype) ? '}' : '<CR>'
+vnoremap <CR> }
 
 
 
@@ -160,12 +175,13 @@ if &t_Co > 2 || has('gui_rendering')
 	hi LineNr term=bold cterm=bold ctermfg=DarkYellow
 	hi Comment ctermfg=DarkCyan
 	hi clear Error
-	hi Error term=underline cterm=underline ctermfg=Red 
+	hi Error term=underline cterm=underline ctermfg=Red
 	hi Folded term=underline cterm=underline ctermfg=DarkGrey ctermbg=DarkGrey
 	hi NonText term=bold cterm=bold ctermfg=DarkGrey
 	hi SpecialKey term=none cterm=none ctermfg=DarkGrey
 	hi clear Search
 	hi Search term=reverse cterm=reverse
+	" hi CursorLine term=underline cterm=underline guibg=Grey40 ctermbg=DarkGrey
 endif
 
 
@@ -206,8 +222,8 @@ set secure		" limit the autoexec feature from "exrc" for security considerations
 set makeprg=make\ -C\ ../build\ -j4
 
 "
-" recommendation from 
-" Vim as a Python IDE - Martin Brochhaus 
+" recommendation from
+" Vim as a Python IDE - Martin Brochhaus
 " https://www.youtube.com/watch?v=YhqsjUUHj6g
 "
 
