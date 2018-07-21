@@ -238,6 +238,7 @@ let mapleader=","	" with 'm','n' below, allows easy tab switches
 " easier movement between tabs
 map <Leader>n <esc>:tabprevious<CR>
 map <Leader>m <esc>:tabnext<CR>
+map <Leader>e <esc>:Explore<CR>
 noremap <Leader>E :qa!<CR> " quit all windows
 
 " map sort function to a key
