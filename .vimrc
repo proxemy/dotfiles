@@ -24,8 +24,6 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 
 " Keep Plugin commands between vundle#begin/end.
-" Plugin 'YouCompleteMe'
-" Plugin 'powerline/powerline'
 " Below is the new powerline plugin which will replace the above once its
 " finished
 
@@ -33,6 +31,7 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'git://github.com/powerline/powerline'
 Plugin 'git://github.com/Valloric/YouCompleteMe'
 Plugin 'git://github.com/tpope/vim-surround'
+Plugin 'git://github.com/vim-syntastic/syntastic'
 "Plugin 'vim-airline/vim-airline'	" lightweight alterniative to powerline
 
 " All of your Plugins must be added before the following line
@@ -187,7 +186,26 @@ endif
 
 
 
+"
+" Syntastic options
+"
+" if exists(syntastic)
+let g:ycm_show_diagnostics_ui = 0 " needed because YCM disables all syntastic checkers by default
+" let g:syntastic_cpp_checkers = 'gcc'
+let g:syntastic_aggregate_errors = 1 " show error from all checkers
+let g:syntastic_cpp_compiler = 'g++'
+let g:syntastic_cpp_compiler_options = ' -std=c++1z -stdlib=libc++'
 
+" recommended Syntastic options by publisher
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+" end: recommended options
 
 
 """"""""""""""""""""""""""
@@ -229,7 +247,7 @@ set makeprg=make\ -C\ ../build\ -j4
 
 " better copy and paste
 set pastetoggle=<F2>
-set clipboard=unnamed
+set clipboard=unnamed " Use the system clipboard
 
 " create a new <leader> key
 let mapleader=","	" with 'm','n' below, allows easy tab switches
@@ -238,7 +256,7 @@ let mapleader=","	" with 'm','n' below, allows easy tab switches
 " easier movement between tabs
 map <Leader>n <esc>:tabprevious<CR>
 map <Leader>m <esc>:tabnext<CR>
-map <Leader>e <esc>:Explore<CR>
+map <Leader>e <esc>:Hexplore<CR>
 noremap <Leader>E :qa!<CR> " quit all windows
 
 " map sort function to a key
