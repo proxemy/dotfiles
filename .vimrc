@@ -195,6 +195,8 @@ let g:ycm_show_diagnostics_ui = 0 " needed because YCM disables all syntastic ch
 let g:syntastic_aggregate_errors = 1 " show error from all checkers
 let g:syntastic_cpp_compiler = 'g++'
 let g:syntastic_cpp_compiler_options = ' -std=c++1z -stdlib=libc++'
+let g:syntastic_python_checkers=['python3']
+
 
 " recommended Syntastic options by publisher
 set statusline+=%#warningmsg#
