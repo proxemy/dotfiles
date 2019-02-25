@@ -196,7 +196,7 @@ let g:syntastic_aggregate_errors = 1 " show error from all checkers
 let g:syntastic_cpp_compiler = 'g++'
 let g:syntastic_cpp_compiler_options = ' -std=c++1z -stdlib=libc++'
 let g:syntastic_python_checkers=['flake8', 'python3']
-let g:syntastic_python_flake8_args='--ignore W,E203,E303,E128,E124,E731'
+let g:syntastic_python_flake8_args='--ignore W,E203,E303,E128,E124,E731,E265'
 
 
 " recommended Syntastic options by publisher
