@@ -1,4 +1,12 @@
-alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'	# dotfiles directory swap
+
+#### setup dotfiles
+# mkdir .dotfiles
+# dotfiles init --bare
+# dotfiles config status.showUntrackedFiles no
+# dotfiles remote add origin https://github.com/proxemy/dotfiles
+# dotfiles pull origin master
+# dotfiles branch --set-upstream-to origin/master
+alias dotfiles='env git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'	# dotfiles directory swap
 
 
 alias l='ls -CFh --color=auto'		# Preferred 'ls' implementation
