@@ -42,5 +42,6 @@ alias path='echo -e ${PATH//:/\\n}'	# path: Echo all executable Paths
 alias fix_stty='stty sane'		# fix_stty: Restore terminal settings when screwed up
 alias ports='netstat -tulanp'	# show open ports
 alias psall='ps auxf | sort -nr -k 4'
+alias noexif='exiftool -all='
 
 alias tmux='tmux -2'
