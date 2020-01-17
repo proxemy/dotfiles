@@ -1,21 +1,20 @@
 
 #### setup dotfiles
-# mkdir .dotfiles
-# dotfiles init --bare
+alias dotfiles='env git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'	# dotfiles directory swap
+# dotfiles init
 # dotfiles config status.showUntrackedFiles no
 # dotfiles remote add origin https://github.com/proxemy/dotfiles
 # dotfiles pull origin master
 # dotfiles branch --set-upstream-to origin/master
-alias dotfiles='env git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'	# dotfiles directory swap
 
 
-alias l='ls -CFh --color=auto'		# Preferred 'ls' implementation
+alias l='ls -CFh --color=auto'
 alias ll='ls -FGlAhp --color=auto'
 alias ls='ls -GFhl --color=auto'
-alias cp='cp -iv'		# Preferred 'cp' implementation
-alias mv='mv -iv'		# Preferred 'mv' implementation
-alias mkdir='mkdir -pv'		# Preferred 'mkdir' implementation
-alias less='less -FSRXc'	# Preferred 'less' implementation
+alias cp='cp -iv'
+alias mv='mv -iv'
+alias mkdir='mkdir -pv'
+alias less='less -FSRXc'
 
 
 
