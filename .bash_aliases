@@ -15,6 +15,7 @@ alias cp='cp -iv'
 alias mv='mv -iv'
 alias mkdir='mkdir -pv'
 alias less='less -FSRXc'
+alias watch='watch ' # space enables alias expansion for the following arg
 
 
 
