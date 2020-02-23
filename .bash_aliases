@@ -1,3 +1,7 @@
+# helper function for cleaner if statements
+bin_exists() { type "$@" > /dev/null 2>&1; }
+
+
 
 #### setup dotfiles
 alias dotfiles='env git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'	# dotfiles directory swap
@@ -15,7 +19,6 @@ alias cp='cp -iv'
 alias mv='mv -iv'
 alias mkdir='mkdir -pv'
 alias less='less -FSRXc'
-alias watch='watch ' # space enables alias expansion for the following arg
 
 
 
@@ -32,7 +35,7 @@ alias .5='cd ../../../../../'		# Go back 5 directory levels
 alias .6='cd ../../../../../../'	# Go back 6 directory levels
 alias ~="cd ~"				# ~: Go Home
 
-if type nvim > /dev/null 2>&1; then
+if bin_exists nvim; then
 	alias vim='nvim';
 fi
 alias edit='vim'			# edit: Opens any file in sublime editor
@@ -43,5 +46,9 @@ alias fix_stty='stty sane'		# fix_stty: Restore terminal settings when screwed u
 alias ports='netstat -tulanp'	# show open ports
 alias psall='ps auxf | sort -nr -k 4'
 alias noexif='exiftool -all='
-
 alias tmux='tmux -2'
+
+
+
+# cleanup
+unset -f bin_exists
