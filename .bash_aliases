@@ -32,9 +32,10 @@ alias .5='cd ../../../../../'		# Go back 5 directory levels
 alias .6='cd ../../../../../../'	# Go back 6 directory levels
 alias ~="cd ~"				# ~: Go Home
 
-
-alias vim='nvim'
-alias edit='nvim'			# edit: Opens any file in sublime editor
+if type nvim > /dev/null 2>&1; then
+	alias vim='nvim';
+fi
+alias edit='vim'			# edit: Opens any file in sublime editor
 alias which='type -all'			# which: Find executables
 alias path='echo -e ${PATH//:/\\n}'	# path: Echo all executable Paths
 
