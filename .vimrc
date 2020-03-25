@@ -1,46 +1,44 @@
-" to show help to the .vimrc file type:
-" :help vimrc
-" :help vimrc-intro
-" :help vimrc_example.vim
-" :help auto-settings
-
 
 """"""""""""""""""""""""""
 " Vundle - Plugin Manager
 """"""""""""""""""""""""""
-"
-" install vundle :
-" git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-"
-"
-set nocompatible	" be iMproved, required as first command
-filetype off		" required
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+let s:vundle_dir = '~/.vim/bundle/Vundle.vim'
 
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+if !isdirectory(expand(s:vundle_dir))
 
-" Keep Plugin commands between vundle#begin/end.
-" Below is the new powerline plugin which will replace the above once its
-" finished
+	if executable('git')
+		echom "Cloning Vundle from git repository. Use ':PluginInstall' to fetch the plugins."
+		call system('git clone https://github.com/VundleVim/Vundle.vim.git ' . s:vundle_dir)
+	else
+		echom "Can't clone Vundle! git is not installed."
+	endif
 
-" use :PluginInstall to install listed repos
-Plugin 'git://github.com/powerline/powerline'
-Plugin 'git://github.com/Valloric/YouCompleteMe'
-Plugin 'git://github.com/tpope/vim-surround'
-Plugin 'git://github.com/vim-syntastic/syntastic'
-"Plugin 'vim-airline/vim-airline'	" lightweight alterniative to powerline
+else
 
-" All of your Plugins must be added before the following line
-call vundle#end()			" required
-" filetype plugin indent on	" required, enabled below in 'vimrc_example' section
+	set nocompatible	" be iMproved, required as first command
+	filetype off		" required
 
+	" set the runtime path to include Vundle and initialize
+	set rtp+=~/.vim/bundle/Vundle.vim
+	call vundle#begin()
 
+	" let Vundle manage Vundle, required
+	Plugin 'VundleVim/Vundle.vim'
 
+	" Keep Plugin commands between vundle#begin/end.
+	" use :PluginInstall to install listed repos
 
+	Plugin 'git://github.com/powerline/powerline'
+	Plugin 'git://github.com/Valloric/YouCompleteMe'
+	Plugin 'git://github.com/tpope/vim-surround'
+	Plugin 'git://github.com/vim-syntastic/syntastic'
+	"Plugin 'vim-airline/vim-airline'	" lightweight alterniative to powerline
+
+	" All of your Plugins must be added before the following line
+	call vundle#end()	" required
+
+endif
 
 
 
@@ -126,7 +124,6 @@ set noswapfile
 
 
 " show tabs and eol as chars:
-" doesnt work propperly?
 scriptencoding utf-8
 set listchars=tab:▸\ ,eol:¬,trail:·
 set list " display non-printable characters as above
@@ -138,7 +135,7 @@ set list " display non-printable characters as above
 
 " mark long lines and trialing white spaces as errors
 "match ErrorMsg '\%>120v.\+'
-"match ErrorMsg '\s\+$'
+match ErrorMsg '\s\+$'
 
 
 
@@ -167,7 +164,7 @@ if &t_Co > 2 || has('gui_rendering')
 	" colors
 	set background=dark " dark color scheme
 	set hlsearch		" highlight search results
-	syntax enable			" syntax highlighting without overwriting existing settings
+	syntax enable		" syntax highlighting without overwriting existing settings
 
 	" custom highlighting
 	" with ':highlight', you can see all possible highlight-groups
@@ -250,12 +247,12 @@ set makeprg=make\ -C\ ../build\ -j4
 "
 
 " better copy and paste
-set pastetoggle=<F2>
+"set pastetoggle=<F2>
 set clipboard=unnamed " Use the system clipboard
+
 
 " create a new <leader> key
 let mapleader=","	" with 'm','n' below, allows easy tab switches
-
 
 " easier movement between tabs
 map <Leader>n <esc>:tabprevious<CR>
