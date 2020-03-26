@@ -54,20 +54,20 @@ set number			" show line numbers
 set backspace=indent,eol,start	" allows BS to delete these characters
 set autoindent		" use indentation of the previous line
 set cindent			" use c snytax indentation
-set smartindent		" yep, smartindet
-set history=200		" command and search history
-set undolevels=200	" undo levels
+set smartindent
+set history=200
+set undolevels=200
 set ruler			" show cursor position in the lower right
 "set cursorline		" unterline/show the current cursorline
 set showcmd			" show command while typing
-" filetype plugin indent on	" recognizing file types, loads plugins (if exit) and detects indentation style
+"filetype plugin indent on	" recognizing file types, loads plugins (if exit) and detects indentation style
 "set spell			" spell checker (en)
 "set spl=en			" spell check language
 set smd				" show mode (normal, insert, replace, visual) when switching
 set verbose=0		" verboselevel to show startup/exit vim processes, default: 11.
 set more			" show '--more--' in listings
-" set eol				" puts an eol at the last line in file
-" set fixeol		" fix missing eol at the end of file
+"set eol				" puts an eol at the last line in file
+"set fixeol			" fix missing eol at the end of file
 set relativenumber	" relative line numbers
 set hidden			" show hidden buffers
 
@@ -107,9 +107,9 @@ set wildmode=full
 
 
 
-" tabs and spaces
+" tabs/spaces indentation
 set tabstop=4		" tabstop = tabwidth
-"set shiftwidth=4	" one foldlevel = 4 chars (tab_size=8 wont fold properly)
+set shiftwidth=4	" one foldlevel = 4 chars (tab_size=8 wont fold properly)
 "set softtabstop=0
 set noexpandtab
 
@@ -122,7 +122,6 @@ set noswapfile
 
 
 
-
 " show tabs and eol as chars:
 scriptencoding utf-8
 set listchars=tab:▸\ ,eol:¬,trail:·
@@ -130,10 +129,6 @@ set list " display non-printable characters as above
 
 
 
-
-
-
-" mark long lines and trialing white spaces as errors
 "match ErrorMsg '\%>120v.\+'
 match ErrorMsg '\s\+$'
 
@@ -146,8 +141,6 @@ vnoremap <BS> {
 nnoremap <expr> <CR> empty(&buftype) ? '}' : '<CR>'
 onoremap <expr> <CR> empty(&buftype) ? '}' : '<CR>'
 vnoremap <CR> }
-
-
 
 
 
@@ -182,31 +175,38 @@ endif
 
 
 
+""""""""""""""""""""""""""
+"	Plugin Config
+""""""""""""""""""""""""""
 
-"
-" Syntastic options
-"
-" if exists(syntastic)
-let g:ycm_show_diagnostics_ui = 0 " needed because YCM disables all syntastic checkers by default
-let g:syntastic_aggregate_errors = 1 " show error from all checkers
-let g:syntastic_cpp_compiler = 'g++'
-let g:syntastic_cpp_compiler_options = ' -std=c++1z -stdlib=libc++'
+if exists(':YcmCompleter')
+	echom "YCM found"
+	let g:ycm_show_diagnostics_ui = 0 " needed because YCM disables all syntastic checkers by default
+endif
 
-" pip3 install neovim pynvim flake8 jedi autopep8
-let g:syntastic_python_checkers=['flake8', 'python3']
-let g:syntastic_python_flake8_args='--ignore W,E117,E201,E202,E203,E226,E228,E242,E261,E302,E303,E128,E124,E731,E265,E722'
+if exists('SyntasticCheck')
+	let g:syntastic_aggregate_errors = 1 " show error from all checkers
+	let g:syntastic_cpp_compiler = 'g++'
+	let g:syntastic_cpp_compiler_options = ' -std=c++1z -stdlib=libc++'
 
+	" pip3 install neovim pynvim flake8 jedi autopep8
+	let g:syntastic_python_checkers=['flake8', 'python3']
+	let g:syntastic_python_flake8_args='--ignore W,E117,E201,E202,E203,E226,E228,E242,E261,E302,E303,E128,E124,E731,E265,E722'
+
+	let g:syntastic_always_populate_loc_list = 1
+	let g:syntastic_auto_loc_list = 1
+	let g:syntastic_check_on_open = 1
+	let g:syntastic_check_on_wq = 0
+
+endif
 
 " recommended Syntastic options by publisher
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+if has('statusline')
+	set statusline+=%#warningmsg#
+	set statusline+=%{SyntasticStatuslineFlag()}
+	set statusline+=%*
+endif
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-" end: recommended options
 
 
 """"""""""""""""""""""""""
@@ -227,29 +227,15 @@ endif
 
 
 
-
-
-"
-" C/C++ recommendations from
-" http://www.alexeyshmalko.com/2014/using-vim-as-c-cpp-ide/
 " set exrc		" vim executes a local .vimrc file for project specific settings
 set secure		" limit the autoexec feature from "exrc" for security considerations
-
 
 " you can enter ":make" to execute make in the current directory.
 " this specifies a target directory
 set makeprg=make\ -C\ ../build\ -j4
 
-"
-" recommendation from
-" Vim as a Python IDE - Martin Brochhaus
-" https://www.youtube.com/watch?v=YhqsjUUHj6g
-"
-
-" better copy and paste
 "set pastetoggle=<F2>
 set clipboard=unnamed " Use the system clipboard
-
 
 " create a new <leader> key
 let mapleader=","	" with 'm','n' below, allows easy tab switches
@@ -263,20 +249,13 @@ noremap <Leader>E :qa!<CR> " quit all windows
 " map sort function to a key
 vnoremap <Leader>s :sort<CR>
 
-" easier moving of selected code block
+" easier moving/indenting of lines/blocks
 vnoremap < <gv	" right
 vnoremap > >gv	" left
 
 " Automatic relaoding of .vimrc
 autocmd! bufwritepost ~/.vimrc source %
 
-
-
-
-" FROM: /usr/share/vim/vim ...
-" $VIMRUNTIME/vimrc_example.vim
-
-" An example for a vimrc file.
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
@@ -304,7 +283,9 @@ if has("autocmd")
 
   augroup END
 
-endif " has("autocmd")
+endif
+
+
 
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
@@ -320,3 +301,5 @@ if has('langmap') && exists('+langnoremap')
   " compatible).
   set langnoremap
 endif
+
+
