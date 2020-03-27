@@ -3,9 +3,18 @@
 " Vundle - Plugin Manager
 """"""""""""""""""""""""""
 
-let s:vundle_dir = '~/.vim/bundle/Vundle.vim'
+let s:plug_home = expand('~/.vim/bundle/')
+let s:plug_dirs = {
+	\ 'vundle':		s:plug_home . 'Vundle.vim',
+	\ 'YCM':		s:plug_home . 'YouCompleteMe',
+	\ 'syntastic':	s:plug_home . 'syntastic'
+\ }
+function! s:plug_exists(name)
+	return isdirectory(s:plug_dirs[a:name])
+endfunction
 
-if !isdirectory(expand(s:vundle_dir))
+
+if ! s:plug_exists('vundle')
 
 	if executable('git')
 		echom "Cloning Vundle from git repository. Use ':PluginInstall' to fetch the plugins."
@@ -39,8 +48,6 @@ else
 	call vundle#end()	" required
 
 endif
-
-
 
 
 
@@ -94,16 +101,6 @@ set scrolloff=3		" number of linse that will be kept while vertical scrolling
 set wildchar=<TAB>
 set wildmenu	" ':' menu with 'wildchar' (TAB)
 set wildmode=full
-
-" status line
-"set laststatus=2	" always show a status line
-"set statusline=
-"set statusline+=[%{winnr()}]\         " window number
-"set statusline+=[%{fugitive#head()}]\ " current git branch
-"set statusline+=%q%f\                 " quickfix label or filename
-"set statusline+=%m                    " modified flag
-"set statusline+=%=                    " split between left and right sides
-"set statusline+=%3l/%3L:%2c           " currentline/totallines:column
 
 
 
@@ -179,12 +176,13 @@ endif
 "	Plugin Config
 """"""""""""""""""""""""""
 
-if exists(':YcmCompleter')
-	echom "YCM found"
+if s:plug_exists('YCM')
+	echom "YCM found."
 	let g:ycm_show_diagnostics_ui = 0 " needed because YCM disables all syntastic checkers by default
 endif
 
-if exists('SyntasticCheck')
+if s:plug_exists('syntastic')
+	echom "Syntastic found."
 	let g:syntastic_aggregate_errors = 1 " show error from all checkers
 	let g:syntastic_cpp_compiler = 'g++'
 	let g:syntastic_cpp_compiler_options = ' -std=c++1z -stdlib=libc++'
@@ -200,10 +198,29 @@ if exists('SyntasticCheck')
 
 endif
 
-" recommended Syntastic options by publisher
+
+function! Get_git_branch()
+	let g_o = systemlist('cd '.expand('%:p:h:S').' && git branch 2>/dev/null')
+	let b:git_branch = len(g_o) > 0 ? strpart(get(g_o,0,''),2) : ''
+endfunc
+autocmd BufEnter,BufWritePost * call Get_git_branch()
+
+
 if has('statusline')
-	set statusline+=%#warningmsg#
-	set statusline+=%{SyntasticStatuslineFlag()}
+	echom "statusline enabled."
+
+	set laststatus=2		" always show a status line
+	set statusline=
+	set statusline+=%y		" file type
+	set statusline+=\ <%{b:git_branch}>
+	set statusline+=%#warningmsg#	" set the background color green
+	if s:plug_exists('syntastic')
+		set statusline+=%{SyntasticStatuslineFlag()}
+	endif
+	set statusline+=%#Normal#		" sets the default background color
+	set statusline+=%=				" splits between left and right side
+	set statusline+=%#warningmsg#	" set the background color green
+	set statusline+=col:%c
 	set statusline+=%*
 endif
 
@@ -215,6 +232,7 @@ endif
 
 " enalbe mouse fetures
 if has('mouse')
+	echom "mouse enabled."
 	set mouse=a
 	set mousefocus
 endif
