@@ -1,6 +1,7 @@
-# helper function for cleaner if statements
-bin_exists() { type "$@" > /dev/null 2>&1; }
+export LC_ALL=en_US.UTF-8
 
+# helper functions, will get unset in the end
+bin_exists() { type "$@" > /dev/null 2>&1; }
 
 
 #### setup dotfiles
@@ -26,14 +27,14 @@ mcd() { mkdir -p "$1" && cd "$1"; }	# mcd: Makes new Dir and jumps inside
 cd() { builtin cd "$@"; l; }		# Always list directory contents upon 'cd'
 
 
-alias cd..='cd ../'			# Go back 1 directory level (for fast typers)
-alias ..='cd ../'			# Go back 1 directory level
-alias ...='cd ../../'			# Go back 2 directory levels
-alias .3='cd ../../../'			# Go back 3 directory levels
-alias .4='cd ../../../../'		# Go back 4 directory levels
-alias .5='cd ../../../../../'		# Go back 5 directory levels
-alias .6='cd ../../../../../../'	# Go back 6 directory levels
-alias ~="cd ~"				# ~: Go Home
+alias cd..='cd ../'
+alias ..='cd ../'
+alias ...='cd ../../'
+alias .3='cd ../../../'
+alias .4='cd ../../../../'
+alias .5='cd ../../../../../'
+alias .6='cd ../../../../../../'
+alias ~='cd ~'
 
 if bin_exists nvim; then
 	alias vim='nvim';
