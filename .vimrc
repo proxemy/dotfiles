@@ -20,7 +20,7 @@ if ! s:plug_exists('vundle')
 		echom "Cloning Vundle from git repository. Use ':PluginInstall' to fetch the plugins."
 		call system('git clone https://github.com/VundleVim/Vundle.vim.git ' . s:vundle_dir)
 	else
-		echom "Can't clone Vundle! git is not installed."
+		echoerr "Can't clone Vundle! git is not installed."
 	endif
 
 else
@@ -177,12 +177,10 @@ endif
 """"""""""""""""""""""""""
 
 if s:plug_exists('YCM')
-	echom "YCM found."
 	let g:ycm_show_diagnostics_ui = 0 " needed because YCM disables all syntastic checkers by default
 endif
 
 if s:plug_exists('syntastic')
-	echom "Syntastic found."
 	let g:syntastic_aggregate_errors = 1 " show error from all checkers
 	let g:syntastic_cpp_compiler = 'g++'
 	let g:syntastic_cpp_compiler_options = ' -std=c++1z -stdlib=libc++'
@@ -207,8 +205,6 @@ autocmd BufEnter,BufWritePost * call Get_git_branch()
 
 
 if has('statusline')
-	echom "statusline enabled."
-
 	set laststatus=2		" always show a status line
 	set statusline=
 	set statusline+=%y		" file type
@@ -219,9 +215,7 @@ if has('statusline')
 	endif
 	set statusline+=%#Normal#		" sets the default background color
 	set statusline+=%=				" splits between left and right side
-	set statusline+=%#warningmsg#	" set the background color green
 	set statusline+=col:%c
-	set statusline+=%*
 endif
 
 
@@ -232,7 +226,6 @@ endif
 
 " enalbe mouse fetures
 if has('mouse')
-	echom "mouse enabled."
 	set mouse=a
 	set mousefocus
 endif
@@ -319,5 +312,4 @@ if has('langmap') && exists('+langnoremap')
   " compatible).
   set langnoremap
 endif
-
 
