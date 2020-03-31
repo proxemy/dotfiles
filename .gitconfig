@@ -1,2 +1,10 @@
 [includeIf "gitdir:~/.dotfiles"]
+	# Proxemy user.name and .email
 	path = ~/.gitconfig_Proxemy
+[core]
+	editor = vim
+[alias]
+	l = log --graph --oneline --relative-date --pretty='%C(yellow)%h %Cblue%>(12)%ad %Cgreen%<(7)%aN%Cred%d %Creset%s'
+	s = status -sb --ahead-behind
+	d = diff --minimal
+	co = checkout
