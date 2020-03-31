@@ -1,3 +1,2 @@
 [includeIf "gitdir:~/.dotfiles"]
-	name = Proxemy
-	email =
+	path = ~/.gitconfig_Proxemy
