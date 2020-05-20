@@ -246,7 +246,7 @@ set secure		" limit the autoexec feature from "exrc" for security considerations
 set makeprg=make\ -C\ ../build\ -j4
 
 "set pastetoggle=<F2>
-set clipboard=unnamed " Use the system clipboard
+set clipboard=unnamedplus " Use the system clipboard
 
 " create a new <leader> key
 let mapleader=","	" with 'm','n' below, allows easy tab switches
