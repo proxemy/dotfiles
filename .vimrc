@@ -65,7 +65,6 @@ set smartindent
 set history=200
 set undolevels=200
 set ruler			" show cursor position in the lower right
-"set cursorline		" unterline/show the current cursorline
 set showcmd			" show command while typing
 "filetype plugin indent on	" recognizing file types, loads plugins (if exit) and detects indentation style
 "set spell			" spell checker (en)
@@ -78,6 +77,11 @@ set more			" show '--more--' in listings
 set relativenumber	" relative line numbers
 set hidden			" show hidden buffers
 
+" enable a cursorline when in insert mode
+set cursorline
+highlight CursorLine ctermbg=None ctermfg=None cterm=Underline
+autocmd InsertEnter * highlight CursorLine ctermbg=DarkGrey cterm=None
+autocmd InsertLeave * highlight CursorLine ctermbg=None cterm=Underline
 
 "set foldmethod=syntax	" fold by syntax (only for C langs?)
 set foldmethod=indent	" fold by indentation
