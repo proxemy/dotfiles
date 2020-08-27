@@ -44,11 +44,16 @@ alias which='type -all'
 alias path='echo -e ${PATH//:/\\n}'
 
 alias fix_stty='stty sane'
-alias ports='netstat -tulanp'
 alias psall='ps auxf | sort -nr -k 4'
 alias noexif='exiftool -all='
 alias tmux='tmux -2'
 alias timestamp='date +%F_%H-%M-%S%z'
+
+if bin_exists ss; then
+	alias ports='ss -tulpan'
+elif bin_exists netstat; then
+	alias ports='netstat -tulanp'
+fi
 
 alias stream-desktop-video='cvlc screen:// --screen-fps=30.000000 --input-slave=pulse://alsa_output.pci-0000_00_1b.0.analog-stereo.monitor --live-caching=300 --no-sout-all --sout-keep --play-and-exit --sout="#transcode{vcodec=h264,vb=8192,scale=0.5,acodec=mp3,ab=192,channels=2,samplerate=44100,scodec=none}:http{mux=ffmpeg{mux=flv},dst=:8884/}"'
 
