@@ -18,7 +18,7 @@ if ! s:plug_exists('vundle')
 
 	if executable('git')
 		echom "Cloning Vundle from git repository. Use ':PluginInstall' to fetch the plugins."
-		call system('git clone https://github.com/VundleVim/Vundle.vim.git ' . s:vundle_dir)
+		call system('git clone https://github.com/VundleVim/Vundle.vim.git ' . s:plug_dirs['vundle'])
 	else
 		echoerr "Can't clone Vundle! git is not installed."
 	endif
