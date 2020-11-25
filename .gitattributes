@@ -1,1 +1,2 @@
 *.kdbx -diff
+token.enc -diff
