@@ -8,3 +8,5 @@
 	s = status -sb --ahead-behind
 	d = diff --minimal
 	co = checkout
+[init]
+	defaultBranch = main
