@@ -38,10 +38,11 @@ else
 	" Keep Plugin commands between vundle#begin/end.
 	" use :PluginInstall to install listed repos
 
-	Plugin 'git://github.com/powerline/powerline'
-	Plugin 'git://github.com/Valloric/YouCompleteMe'
-	Plugin 'git://github.com/tpope/vim-surround'
-	Plugin 'git://github.com/vim-syntastic/syntastic'
+	Plugin 'https://github.com/powerline/powerline'
+	Plugin 'https://github.com/Valloric/YouCompleteMe'
+	Plugin 'https://github.com/tpope/vim-surround'
+	Plugin 'https://github.com/vim-syntastic/syntastic'
+	Plugin 'https://github.com/rust-lang/rust.vim'
 	"Plugin 'vim-airline/vim-airline'	" lightweight alterniative to powerline
 
 	" All of your Plugins must be added before the following line
