@@ -13,13 +13,21 @@ alias dotfiles='env git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'	# dotfiles
 # dotfiles branch --set-upstream-to origin/master
 
 
+export HISTIGNORE='pwd,exit,fg,bg,clear,jobs'
+#export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND};history -c;history -a;history -r"
+
+
 alias l='ls -CFh --color=auto'
 alias ll='ls -FGlAhp --color=auto'
 alias ls='ls -GFhl --color=auto'
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias mkdir='mkdir -pv'
-alias less='less -FSRXc'
+alias less='less -FSRX'
+alias grep='grep --color=auto'
+alias ml='mount -l | column -t'
+alias gdb='gdb --tui'
+alias taill='tail -f $(find /var/log -type f 2>-)'
 
 
 
