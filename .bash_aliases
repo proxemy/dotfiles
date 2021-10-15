@@ -32,8 +32,15 @@ alias taill='tail -f $(find /var/log -type f 2>&-)'
 
 
 
+
 mcd() { mkdir -p "$1" && cd "$1"; }	# mcd: Makes new Dir and jumps inside
 cd() { builtin cd "$@"; l; }		# Always list directory contents upon 'cd'
+maxprio() {
+	p=$(pidof "$1") || return
+	sudo renice -n -15 "$p"
+	sudo chrt -f -p 99 "$p"
+	sudo ionice -c 1 -n 0 -p "$p"
+}
 
 
 alias cd..='cd ../'
