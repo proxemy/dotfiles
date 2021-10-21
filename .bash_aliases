@@ -1,7 +1,7 @@
 export LC_ALL=en_US.UTF-8
 
-# helper functions, will get unset in the end
-bin_exists() { type "$@" > /dev/null 2>&1; }
+# helper functions
+bin_exists() { type "$@" > /dev/null 2>&-; }
 
 
 #### setup dotfiles
@@ -13,15 +13,16 @@ alias dotfiles='env git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'	# dotfiles
 # dotfiles branch --set-upstream-to origin/master
 
 
-export HISTIGNORE='pwd,exit,fg,bg,clear,jobs'
+export HISTIGNORE='pwd,exit,fg,bg,clear,jobs,l,ll,lll,history'
 #export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND};history -c;history -a;history -r"
 export PAGER='less'
-export LESS='-FSWri -j.5 -x2 --mouse'
+export LESS='-FSWri -j.5 --mouse'
+export EDITOR='vim'
 
 
 alias l='ls -CFh --color=always --group-directories-first'
-alias ll='l -Glhp'
-alias lll='ll -FA'
+alias ll='l -Glp'
+alias lll='ll -FAZ'
 alias ls='ls -GFhl --color=always'
 alias cp='cp -iv'
 alias mv='mv -iv'
@@ -35,7 +36,6 @@ alias nix-repl='nix repl "<nixpkgs>" "<nixpkgs/nixos>"'
 
 
 
-
 mcd() { mkdir -p "$1" && cd "$1"; }	# mcd: Makes new Dir and jumps inside
 cd() { builtin cd "$@"; l; }		# Always list directory contents upon 'cd'
 maxprio() {
@@ -44,6 +44,7 @@ maxprio() {
 	sudo chrt -f -p 99 "$p"
 	sudo ionice -c 1 -n 0 -p "$p"
 }
+dl() { echo "$@" | sed 's/?.*$//g' | wget -bcT 10; }
 
 
 alias cd..='cd ../'
@@ -78,5 +79,6 @@ alias stream-desktop-video='cvlc screen:// --screen-fps=30.000000 --input-slave=
 
 
 
-# cleanup
-unset -f bin_exists
+if bin_exists tmux; then
+	tmux attach || tmux new
+fi
