@@ -14,21 +14,24 @@ alias dotfiles='env git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'	# dotfiles
 
 
 export HISTIGNORE='pwd,exit,fg,bg,clear,jobs'
-export PAGER='less'
 #export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND};history -c;history -a;history -r"
+export PAGER='less'
+export LESS='-FSWri -j.5 -x2 --mouse'
 
 
-alias l='ls -CFh --color=always'
-alias ll='ls -FGlAhp --color=always'
+alias l='ls -CFh --color=always --group-directories-first'
+alias ll='l -Glhp'
+alias lll='ll -FA'
 alias ls='ls -GFhl --color=always'
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias mkdir='mkdir -pv'
-alias less='less -FSRX'
 alias grep='grep --color=always'
 alias ml='mount -l | column -t'
 alias gdb='gdb --tui'
+alias sudo='sudo -E'
 alias taill='tail -f $(find /var/log -type f 2>&-)'
+alias nix-repl='nix repl "<nixpkgs>" "<nixpkgs/nixos>"'
 
 
 
