@@ -16,7 +16,7 @@ alias dotfiles='env git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'	# dotfiles
 export HISTIGNORE='pwd,exit,fg,bg,clear,jobs,l,ll,lll,history'
 #export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND};history -c;history -a;history -r"
 export PAGER='less'
-export LESS='-FSWri -j.5 --mouse'
+export LESS='-FSri -j.5'
 export EDITOR='vim'
 
 
@@ -40,11 +40,11 @@ mcd() { mkdir -p "$1" && cd "$1"; }	# mcd: Makes new Dir and jumps inside
 cd() { builtin cd "$@"; l; }		# Always list directory contents upon 'cd'
 maxprio() {
 	p=$(pidof "$1") || return
-	sudo renice -n -15 "$p"
-	sudo chrt -f -p 99 "$p"
-	sudo ionice -c 1 -n 0 -p "$p"
+	sudo renice -n -15 $p || echo "renice failed."
+	sudo chrt -f -p 99 $p || echo "chrt failed."
+	sudo ionice -c 1 -n 0 -p $p || echo "ionice failed."
 }
-dl() { echo "$@" | sed 's/?.*$//g' | wget -bcT 10; }
+dl() { wget -nvbcT 10 -a wget.log "$(echo $@ | sed 's/?.*$//g')"; }
 
 
 alias cd..='cd ../'
@@ -79,6 +79,6 @@ alias stream-desktop-video='cvlc screen:// --screen-fps=30.000000 --input-slave=
 
 
 
-if bin_exists tmux; then
+if bin_exists tmux && [ -z "$TMUX" ] ; then
 	tmux attach || tmux new
 fi
