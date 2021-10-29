@@ -1,23 +1,23 @@
 export LC_ALL=en_US.UTF-8
-
-# helper functions
-bin_exists() { type "$@" > /dev/null 2>&-; }
-
-
-#### setup dotfiles
-alias dotfiles='env git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'	# dotfiles directory swap
-# dotfiles init
-# dotfiles config status.showUntrackedFiles no
-# dotfiles remote add origin https://github.com/proxemy/dotfiles
-# dotfiles pull origin master
-# dotfiles branch --set-upstream-to origin/master
-
-
 export HISTIGNORE='pwd,exit,fg,bg,clear,jobs,l,ll,lll,history'
 #export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND};history -c;history -a;history -r"
 export PAGER='less'
 export LESS='-FSri -j.5'
 export EDITOR='vim'
+
+# helper functions
+bin_exists() { type "$@" > /dev/null 2>&-; }
+
+
+# curl -s https://raw.githubusercontent.com/proxemy/dotfiles/master/.bash_aliases | sed '1,/^###/d;/^###/,$d;s/^# //g' | sh
+### BEGIN dotfiles-init
+alias dotfiles='env git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'	# dotfiles directory swap
+# set -e
+# dotfiles clone --bare --depth=1 https://github.com/proxemy/dotfiles
+# mv $HOME/dotfiles.git $HOME/.dotfiles
+# dotfiles config status.showUntrackedFiles no
+# dotfiles reset --hard
+### END dotfiles-init
 
 
 alias l='ls -CFh --color=always --group-directories-first'
