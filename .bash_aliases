@@ -79,6 +79,9 @@ alias stream-desktop-video='cvlc screen:// --screen-fps=30.000000 --input-slave=
 
 
 
+umask 0077
+
+
 if bin_exists tmux && [ -z "$TMUX" ] ; then
 	tmux attach || tmux new
 fi
