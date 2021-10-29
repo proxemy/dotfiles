@@ -203,23 +203,19 @@ endif
 
 function! Get_git_branch()
 	let g_o = systemlist('cd '.expand('%:p:h:S').' && git branch 2>/dev/null')
-	let b:git_branch = len(g_o) > 0 ? strpart(get(g_o,0,''),2) : ''
+	let b:git_branch = len(g_o) > 0 ? strpart(get(g_o,0,''),2) : 'non-git'
 endfunc
 autocmd BufEnter,BufWritePost * call Get_git_branch()
 
 
 if has('statusline')
 	set laststatus=2		" always show a status line
-	set statusline=
-	set statusline+=%y		" file type
-	set statusline+=\ <%{b:git_branch}>
-	set statusline+=%#warningmsg#	" set the background color green
+	set stl=[%Y,%{&fileencoding?&fileencoding:&encoding}] " file type/enc
+	set stl+=<%{b:git_branch}>
 	if s:plug_exists('syntastic')
-		set statusline+=%{SyntasticStatuslineFlag()}
+		set stl+=%{SyntasticStatuslineFlag()}
 	endif
-	set statusline+=%#Normal#		" sets the default background color
-	set statusline+=%=				" splits between left and right side
-	set statusline+=col:%c
+	set stl+=%1*%=%0*%l/%L:%c\ %p%%	" shows file location stuff, right
 endif
 
 
