@@ -78,11 +78,6 @@ set more			" show '--more--' in listings
 set relativenumber	" relative line numbers
 set hidden			" show hidden buffers
 
-" enable a cursorline when in insert mode
-set cursorline
-highlight CursorLine ctermbg=None ctermfg=None cterm=Underline
-autocmd InsertEnter * highlight CursorLine ctermbg=DarkGrey cterm=None
-autocmd InsertLeave * highlight CursorLine ctermbg=None cterm=Underline
 
 "set foldmethod=syntax	" fold by syntax (only for C langs?)
 set foldmethod=indent	" fold by indentation
@@ -172,7 +167,12 @@ if &t_Co > 2 || has('gui_rendering')
 	hi SpecialKey term=none cterm=none ctermfg=DarkGrey
 	hi clear Search
 	hi Search term=reverse cterm=reverse
-	" hi CursorLine term=underline cterm=underline guibg=Grey40 ctermbg=DarkGrey
+
+	" enable a cursorline when in insert mode
+	set cursorline
+	hi CursorLine term=None cterm=None ctermbg=None
+	autocmd InsertEnter * highlight CursorLine cterm=Underline
+	autocmd InsertLeave * highlight CursorLine cterm=None
 endif
 
 
@@ -198,7 +198,6 @@ if s:plug_exists('syntastic')
 	let g:syntastic_auto_loc_list = 1
 	let g:syntastic_check_on_open = 1
 	let g:syntastic_check_on_wq = 0
-
 endif
 
 
@@ -253,13 +252,6 @@ set makeprg=make\ -C\ ../build\ -j4
 "set pastetoggle=<F2>
 set clipboard=unnamedplus " Use the system clipboard
 
-" create a new <leader> key
-let mapleader=","	" with 'm','n' below, allows easy tab switches
-
-" easier movement between tabs
-map <Leader>n <esc>:tabprevious<CR>
-map <Leader>m <esc>:tabnext<CR>
-map <Leader>e <esc>:Hexplore<CR>
 noremap <Leader>E :qa!<CR> " quit all windows
 
 " map sort function to a key
