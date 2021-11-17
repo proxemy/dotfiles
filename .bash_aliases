@@ -38,7 +38,7 @@ alias grep='grep --color=always'
 alias ml='mount -l | column -t'
 alias gdb='gdb --tui'
 alias sudo='sudo -E'
-alias taill='tail -f $(find /var/log -type f 2>&-)'
+alias taill='tail -f $(find /var/log -type f -name "*.*" ! -name "*.journal*" 2>&-)'
 alias nix-repl='nix repl "<nixpkgs>" "<nixpkgs/nixos>"'
 
 
