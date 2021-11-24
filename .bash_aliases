@@ -46,12 +46,12 @@ alias nix-repl='nix repl "<nixpkgs>" "<nixpkgs/nixos>"'
 mcd() { mkdir -p "$1" && cd "$1"; }	# mcd: Makes new Dir and jumps inside
 cd() { builtin cd "$@"; l; }		# Always list directory contents upon 'cd'
 maxprio() {
-	p=$(pidof "$1") || return
+	p=$(pidof "$1") || return 1
 	sudo renice -n -15 $p || echo "renice failed."
 	sudo chrt -f -p 99 $p || echo "chrt failed."
 	sudo ionice -c 1 -n 0 -p $p || echo "ionice failed."
 }
-dl() { wget -nvbcT 10 -a wget.log "$(echo $@ | sed 's/?.*$//g')"; }
+dl() { wget -nv -bcT 10 -a wget.log "$(echo $@ | sed 's/?.*$//g')"; }
 
 
 alias cd..='cd ../'
