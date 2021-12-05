@@ -1,4 +1,6 @@
+# ipnut is 'top -p0 -bsn 1' see ~/.tmux.conf
 NR == 3 {
+	gsub(/,/, " ", $0); # at 100% cpu idle ($8) the white space separator disappears, yielding "id,"
 	cpu_usage = int(100 - $8);
 	if      (cpu_usage >= 90) cpu_c="#[fg=white,bold,bg=red,blink]";
 	else if (cpu_usage >= 60) cpu_c="#[fg=white,bold,bg=yellow]";
@@ -18,7 +20,7 @@ END {
 	printf(\
 		"#[fg=yellow,dim]%s%d:%02d:%02d",\
 		($1/60/60/24 <= 0 ? int($1/60/60/24)":" : ""),\
-		($1/60/60%24),\
+		$1/60/60%24,\
 		$1/60%60,\
 		$1%60,\
 		"#[default] "\
