@@ -44,6 +44,7 @@ else
 	Plugin 'https://github.com/vim-syntastic/syntastic'
 	Plugin 'https://github.com/rust-lang/rust.vim'
 	"Plugin 'vim-airline/vim-airline'	" lightweight alterniative to powerline
+	Plugin 'nvim-treesitter/nvim-treesitter' " , {'do': ':TSUpdate'}
 
 	" All of your Plugins must be added before the following line
 	call vundle#end()	" required
