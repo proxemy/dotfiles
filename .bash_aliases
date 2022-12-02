@@ -1,3 +1,5 @@
+set -o vi
+
 export LC_ALL=en_US.UTF-8
 export PS1="\
 \[\e[1;30m\]\t\[\e[0m\] \
@@ -31,6 +33,8 @@ alias l='ls -CFh --color=always --group-directories-first'
 alias ll='l -Glp'
 alias lll='ll -FAZ'
 alias ls='ls -GFhl --color=always'
+
+# parameterized commands
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias mkdir='mkdir -pv'
@@ -38,9 +42,38 @@ alias grep='grep --color=always'
 alias ml='mount -l | column -t'
 alias gdb='gdb --tui'
 alias sudo='sudo -E'
-alias taill='tail -f $(find /var/log -type f -name "*.*" ! -name "*.journal*" 2>&-)'
-alias nix-repl='nix repl "<nixpkgs>" "<nixpkgs/nixos>"'
+alias tmux='tmux -2'
+alias tree='tree -C'
 
+# new commands as aliases
+alias edit='vim'
+alias which='type -all'
+alias path='echo -e ${PATH//:/\\n}'
+alias fix_stty='stty sane'
+alias psall='ps auxf | sort -nr -k 4'
+alias noexif='exiftool -all='
+alias timestamp='date +%F_%H-%M-%S%z'
+alias taill='tail -f $(find /var/log -type f -name "*.*" ! -name "*.journal*" 2>&-)'
+alias svndiff='svn diff --git --patch-compatible | vim -'
+
+alias    cd..='cd ../'
+alias      ..='cd ../'
+alias      .2='cd ../../'
+alias     ...='cd ../../'
+alias      .3='cd ../../../'
+alias    ....='cd ../../../'
+alias      .4='cd ../../../../'
+alias   .....='cd ../../../../'
+alias      .5='cd ../../../../../'
+alias  ......='cd ../../../../../'
+alias      .6='cd ../../../../../../'
+alias .......='cd ../../../../../../'
+
+
+bin_exists nvim    && alias vim='nvim'
+bin_exists nix     && alias nix-repl='nix repl "<nixpkgs>" "<nixpkgs/nixos>"'
+bin_exists ss      && alias ports='ss -tulpan'
+bin_exists netstat && alias ports='netstat -tulanp'
 
 
 mcd() { mkdir -p "$1" && cd "$1"; }	# mcd: Makes new Dir and jumps inside
@@ -53,34 +86,6 @@ maxprio() {
 }
 dl() { wget -nv -bcT 10 -a wget.log "$(echo $@ | sed 's/?.*$//g')"; }
 
-
-alias cd..='cd ../'
-alias ..='cd ../'
-alias ...='cd ../../'
-alias .3='cd ../../../'
-alias .4='cd ../../../../'
-alias .5='cd ../../../../../'
-alias .6='cd ../../../../../../'
-alias ~='cd ~'
-
-if bin_exists nvim; then
-	alias vim='nvim';
-fi
-alias edit='vim'
-alias which='type -all'
-alias path='echo -e ${PATH//:/\\n}'
-
-alias fix_stty='stty sane'
-alias psall='ps auxf | sort -nr -k 4'
-alias noexif='exiftool -all='
-alias tmux='tmux -2'
-alias timestamp='date +%F_%H-%M-%S%z'
-
-if bin_exists ss; then
-	alias ports='ss -tulpan'
-elif bin_exists netstat; then
-	alias ports='netstat -tulanp'
-fi
 
 # cvlc local network streaming
 alias get_paudio_monitor='pactl list | grep "Monitor Source" | cut -d" " -f3'

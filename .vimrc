@@ -141,6 +141,15 @@ onoremap <expr> <CR> empty(&buftype) ? '}' : '<CR>'
 vnoremap <CR> }
 
 
+" Netrw¬
+let g:netrw_liststyle=3
+let g:netrw_banner=0
+let g:netrw_cursor=3
+let g:netrw_sizestyle="H"
+"let g:netrw_browse_split=4¬
+"let g:netrw_altv=1¬
+"let g:netrw_winsize=25
+"
 
 """"""""""""""""""""""""""
 "	Colors
@@ -150,7 +159,7 @@ if &t_Co > 2 || has('gui_rendering')
 
 	" set the color column to show/delimit line length
 	set colorcolumn=80
-	highlight ColorColumn ctermbg=LightGrey
+	highlight ColorColumn cterm=reverse gui=reverse
 
 	" colors
 	set background=dark " dark color scheme
@@ -201,22 +210,23 @@ if s:plug_exists('syntastic')
 	let g:syntastic_check_on_wq = 0
 endif
 
-
+let g:git_branch = 'non-git'
 function! Get_git_branch()
 	let g_o = systemlist('cd '.expand('%:p:h:S').' && git branch 2>/dev/null')
-	let b:git_branch = len(g_o) > 0 ? strpart(get(g_o,0,''),2) : 'non-git'
+	let g:git_branch = len(g_o) > 0 ? strpart(get(g_o,0,''),2) : 'non-git'
 endfunc
 autocmd BufEnter,BufWritePost * call Get_git_branch()
 
 
 if has('statusline')
+	highlight StatusLineMiddle cterm=underline
 	set laststatus=2		" always show a status line
 	set stl=[%Y,%{&fileencoding?&fileencoding:&encoding}] " file type/enc
-	set stl+=<%{b:git_branch}>
+	set stl+=<%{g:git_branch}>
 	if s:plug_exists('syntastic')
 		set stl+=%{SyntasticStatuslineFlag()}
 	endif
-	set stl+=%1*%=%0*%l/%L:%c\ %p%%	" shows file location stuff, right
+	set stl+=%#StatusLineMiddle#%=%0*%l/%L:%c\ %p%% " shows file location stuff, right
 endif
 
 
