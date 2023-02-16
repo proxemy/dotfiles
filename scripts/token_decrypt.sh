@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -eu
+
 [ $# -ne 2 ]	&& echo "USAGE: 'token_decrypt.sh FILE.enc FILE.dec'" && exit 1
 [ ! -f "$1" ]	&& echo "Couldn't find encrypted token file:" "$1" && exit 1
 [ -f "$2" ]		&& echo "Target decrypted token file already exists:" "$2" && exit 1
