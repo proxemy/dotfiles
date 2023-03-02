@@ -90,7 +90,7 @@ set fillchars=fold:\ " disable 'fillchars' in 'foldtext' lines
 set foldtext=\		" disable foldtext() method
 set formatoptions=jl	" Formating option, see :help fo-table for details
 
-set bs=2		" backspacing behaviour. 2 = backspace over indent, eol, start 
+set bs=2		" backspacing behaviour. 2 = backspace over indent, eol, start
 set showtabline=2	" always show tabbar
 set tabpagemax=10	" max tabs to show. use :next or :last to navigate to exceeding tabs
 set nowrap			" disable line break
@@ -161,7 +161,7 @@ if &t_Co > 2 || has('gui_rendering')
 
 	" set the color column to show/delimit line length
 	set colorcolumn=80
-	highlight ColorColumn cterm=reverse gui=reverse
+	highlight ColorColumn ctermbg=darkgrey guibg=darkgrey cterm=reverse gui=reverse
 
 	" colors
 	set background=dark " dark color scheme
