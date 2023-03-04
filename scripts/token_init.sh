@@ -4,12 +4,13 @@ set -Eeuo pipefail
 
 
 usage() { echo "USAGE: ./$(basename $0) [token.enc] [token.dec]"; }
-trap usage ERR
+trap usage ERR EXIT
+[ $# -ne 2 ] && exit 1
 
-readonly enc=${1:-$(exit 1)}
-readonly dec=${2:-$(exit 1)}
+readonly enc=$1
+readonly dec=$2
 
-readonly SUDOERS_KEEPASSXC=/etc/sudoers.d/keepassxc_$USER
+readonly SUDOERS_FILE=/etc/sudoers.d/keepassxc_$USER
 readonly CRYPT_MAPPER_DEVICE=/dev/mapper/tmp_dev
 
 
@@ -17,8 +18,8 @@ readonly CRYPT_MAPPER_DEVICE=/dev/mapper/tmp_dev
 && echo "Couldn't find encrypted token file:" "$enc" && exit 1
 [ -f "$dec" ] \
 && echo "Target decrypted token file already exists:" "$dec" && exit 1
-[ -f "$SUDOERS_KEEPASSXC" ] \
-&& echo "Excepted keepassxc sudoers file to not exist:" "$SUDOERS_KEEPASSXC" && exit 1
+[ -f "$SUDOERS_FILE" ] \
+&& echo "Excepted keepassxc sudoers file to not exist:" "$SUDOERS_FILE" && exit 1
 [ -f "$CRYPT_MAPPER_DEVICE" ] \
 && echo "cryptsetup mapper device busy:" "$CRYPT_MAPPER_DEVICE" && exit 1
 
@@ -40,16 +41,16 @@ trap on_exit EXIT
 
 
 #if ! getent group keepassxc; then
-sudo addgroup keepassxc
+sudo addgroup keepassxc || true
 
-echo "$USER $HOSTNAME=(:keepassxc) NOPASSWD:SETENV:NOEXEC:NOFOLLOW: /usr/bin/keepassxc" \
-| sudo tee "$SUDOERS_KEEPASSXC"
+echo "$USER $HOSTNAME=(:keepassxc) NOPASSWD:NOEXEC:NOFOLLOW: /usr/bin/keepassxc" \
+| sudo tee "$SUDOERS_FILE"
 
-visudo -sc "$SUDOERS_KEEPASSXC" \
-|| sudo rm "$SUDOERS_KEEPASSXC"
+visudo -sc "$SUDOERS_FILE" \
+|| sudo rm "$SUDOERS_FILE"
 
-sudo chmod a-rwx,ug+r "$SUDOERS_KEEPASSXC"
-sudo chown root:root "$SUDOERS_KEEPASSXC"
+sudo chmod a-rwx,ug+r "$SUDOERS_FILE"
+sudo chown root:root "$SUDOERS_FILE"
 
 sudo cryptsetup plainOpen \
 	-c aes-cbc-essiv:sha256 \

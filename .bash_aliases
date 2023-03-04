@@ -29,10 +29,10 @@ alias dotfiles='env git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'	# dotfiles
 ### END dotfiles-init
 
 
-alias l='ls -CFh --color=always --group-directories-first'
-alias ll='l -Glp'
-alias lll='ll -FAZ'
-alias ls='ls -GFhl --color=always'
+alias l='ls -CFh --group-directories-first'
+alias ll='l -FGlp'
+alias lll='l -FAZl'
+alias ls='ls --color=always'
 
 # parameterized commands
 alias cp='cp -iv'
@@ -92,7 +92,7 @@ alias get_paudio_monitor='pactl list | grep "Monitor Source" | cut -d" " -f3'
 alias stream-video='nice -10 cvlc -vvv screen:// --screen-fps=30.000000 --input-slave=pulse://$(get_paudio_monitor) --live-caching=300 --no-sout-all --sout-keep --play-and-exit --sout "#transcode{vcodec=h264,vb=8192,scale=0.5,acodec=mp3,ab=192,channels=2,samplerate=44100,scodec=none}:http{mux=ffmpeg{mux=flv},dst=:8888/v.mp4}"'
 alias stream-audio='nice -10 cvlc -vvv pulse://$(get_paudio_monitor) --sout "#transcode{acodec=mp3,ab=128,channels=2}:http{dst=:8888/a.mp3}"'
 
-alias gkeepassxc='sudo -g keepassxc /usr/bin/keepassxc'
+alias gkeepassxc='/usr/bin/sudo -g keepassxc /usr/bin/keepassxc'
 
 umask 0077
 
