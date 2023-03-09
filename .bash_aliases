@@ -6,7 +6,7 @@ export PS1="\
 \[\e[1;35m\]\u\[\e[0m\]@\
 \[\e[1;36m\]\H\[\e[0m\]:\
 \[\e[1;32m\]\w\[\e[0m\]\
-\$(ret=\$?; [ \$ret -ne 0 ] && echo \>\e[1\;31m\e[41m\$ret\e[m)\
+\$(ret=\$?; [ \$ret -ne 0 ] && echo \e[41m\$ret\e[m)\
 \[\e[1;32m\]\n$ \[\e[0m\]"
 export HISTIGNORE='pwd,exit,fg,bg,clear,jobs,l,ll,lll,history'
 #export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND};history -c;history -a;history -r"
@@ -38,7 +38,8 @@ alias ls='ls --color=always'
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias mkdir='mkdir -pv'
-alias grep='grep --color=always'
+alias grep='grep --color=auto'
+alias g='grep'
 alias ml='mount -l | column -t'
 alias gdb='gdb --tui'
 alias sudo='sudo -E'
