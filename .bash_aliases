@@ -56,6 +56,7 @@ alias noexif='exiftool -all='
 alias timestamp='date +%F_%H-%M-%S%z'
 alias taill='tail -f $(find /var/log -type f -name "*.*" ! -name "*.journal*" 2>&-)'
 alias svndiff='svn diff --git --patch-compatible | vim -'
+alias ssh-shell='eval $(ssh-agent)'
 
 alias    cd..='cd ../'
 alias      ..='cd ../'
