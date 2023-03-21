@@ -27,8 +27,8 @@ readonly CRYPT_MAPPER_DEVICE=/dev/mapper/tmp_dev
 trap 'echo Missing Dependency!' ERR
 type keepassxc
 type cryptsetup
-type su
-trap '' ERR
+type sudo
+trap -
 
 
 on_exit()
@@ -46,7 +46,7 @@ sudo addgroup keepassxc || true
 echo "$USER $HOSTNAME=(:keepassxc) NOPASSWD:NOEXEC:NOFOLLOW: /usr/bin/keepassxc" \
 | sudo tee "$SUDOERS_FILE"
 
-visudo -sc "$SUDOERS_FILE" \
+sudo visudo -sc "$SUDOERS_FILE" \
 || sudo rm "$SUDOERS_FILE"
 
 sudo chmod a-rwx,ug+r "$SUDOERS_FILE"
