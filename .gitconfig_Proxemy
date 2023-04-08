@@ -1,6 +1,3 @@
 [user]
 	name = Proxemy
 	email = 33573115+proxemy@users.noreply.github.com
-[remote "origin"]
-	url = https://github.com/proxemy/dotfiles
-	pushurl = git@github.com:proxemy/dotfiles.git

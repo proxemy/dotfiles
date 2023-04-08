@@ -10,3 +10,9 @@
 	co = checkout
 [init]
 	defaultBranch = main
+
+# different remote locations for pull/push
+# unfortunately infers with other git invocations besides the dotfiles repo
+#[remote "origin"]
+	#url = https://github.com/proxemy/dotfiles
+	#pushurl = git@github.com:proxemy/dotfiles.git
