@@ -40,13 +40,15 @@ else
 	" Keep Plugin commands between vundle#begin/end.
 	" use :PluginInstall to install listed repos
 
-	Plugin 'https://github.com/powerline/powerline'
 	Plugin 'https://github.com/Valloric/YouCompleteMe'
-	Plugin 'https://github.com/tpope/vim-surround'
-	Plugin 'https://github.com/vim-syntastic/syntastic'
-	Plugin 'https://github.com/rust-lang/rust.vim'
-	"Plugin 'vim-airline/vim-airline'	" lightweight alterniative to powerline
-	Plugin 'nvim-treesitter/nvim-treesitter' " , {'do': ':TSUpdate'}
+	Plugin 'https://github.com/nvim-treesitter/nvim-treesitter' , { 'do': ':TSUpdate' }
+
+	" deprecated syntax checker and error display, superseded by treesitter
+	"Plugin 'https://github.com/vim-syntastic/syntastic'
+
+	" custom syntax highlighting superseded by treesitter language modules
+	"Plugin 'https://github.com/LnL7/vim-nix'
+	"Plugin 'https://github.com/rust-lang/rust.vim'
 
 	" All of your Plugins must be added before the following line
 	call vundle#end()	" required
@@ -197,20 +199,21 @@ if s:plug_exists('YCM')
 	let g:ycm_show_diagnostics_ui = 0 " needed because YCM disables all syntastic checkers by default
 endif
 
-if s:plug_exists('syntastic')
-	let g:syntastic_aggregate_errors = 1 " show error from all checkers
-	let g:syntastic_cpp_compiler = 'g++'
-	let g:syntastic_cpp_compiler_options = ' -std=c++1z -stdlib=libc++'
+" syntastic plugin is disabled
+"if s:plug_exists('syntastic')
+	"let g:syntastic_aggregate_errors = 1 " show error from all checkers
+	"let g:syntastic_cpp_compiler = 'g++'
+	"let g:syntastic_cpp_compiler_options = ' -std=c++1z -stdlib=libc++'
 
 	" pip3 install neovim pynvim flake8 jedi autopep8
-	let g:syntastic_python_checkers=['flake8', 'python3']
-	let g:syntastic_python_flake8_args='--ignore W,E117,E201,E202,E203,E226,E228,E242,E261,E302,E303,E128,E124,E731,E265,E722'
+	"let g:syntastic_python_checkers=['flake8', 'python3']
+	"let g:syntastic_python_flake8_args='--ignore W,E117,E201,E202,E203,E226,E228,E242,E261,E302,E303,E128,E124,E731,E265,E722'
 
-	let g:syntastic_always_populate_loc_list = 1
-	let g:syntastic_auto_loc_list = 1
-	let g:syntastic_check_on_open = 1
-	let g:syntastic_check_on_wq = 0
-endif
+	"let g:syntastic_always_populate_loc_list = 1
+	"let g:syntastic_auto_loc_list = 1
+	"let g:syntastic_check_on_open = 1
+	"let g:syntastic_check_on_wq = 0
+"endif
 
 let g:git_branch = 'non-git'
 function! Get_git_branch()
@@ -225,9 +228,6 @@ if has('statusline')
 	set laststatus=2		" always show a status line
 	set stl=[%Y,%{&fileencoding?&fileencoding:&encoding}] " file type/enc
 	set stl+=<%{g:git_branch}>
-	if s:plug_exists('syntastic')
-		set stl+=%{SyntasticStatuslineFlag()}
-	endif
 	set stl+=%#StatusLineMiddle#%=%0*%l/%L:%c\ %p%% " shows file location stuff, right
 endif
 
