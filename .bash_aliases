@@ -1,4 +1,4 @@
-set -o vi
+#set -o vi
 
 export LC_ALL=en_US.UTF-8
 export PS1="\
@@ -16,6 +16,13 @@ export EDITOR='vim'
 
 # helper functions
 bin_exists() { type "$@" > /dev/null 2>&-; }
+
+if bin_exists nvim; then
+	EDITOR='nvim'
+	alias vim='nvim'
+elif bin_exists vim; then
+	EDITOR='vim'
+fi
 
 
 # curl -s https://raw.githubusercontent.com/proxemy/dotfiles/master/.bash_aliases | sed '1,/^###/d;/^###/,$d;s/^# //g' | sh
@@ -72,8 +79,7 @@ alias      .6='cd ../../../../../../'
 alias .......='cd ../../../../../../'
 
 
-bin_exists nvim    && alias vim='nvim'
-bin_exists nix     && alias nix-repl='nix repl "<nixpkgs>" "<nixpkgs/nixos>"'
+bin_exists nix     && alias nix-repl='nix repl "<nixpkgs>"'
 bin_exists ss      && alias ports='ss -tulpan'
 bin_exists netstat && alias ports='netstat -tulanp'
 
