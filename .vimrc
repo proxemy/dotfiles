@@ -9,7 +9,7 @@ let s:plug_home = expand('~/.vim/bundle/')
 let s:plug_dirs = {
 	\ 'vundle':		s:plug_home . 'Vundle.vim',
 	\ 'YCM':		s:plug_home . 'YouCompleteMe',
-	\ 'syntastic':	s:plug_home . 'syntastic'
+	\ 'tree-sitter':s:plug_home . 'nvim-treesitter'
 \ }
 function! s:plug_exists(name)
 	return isdirectory(s:plug_dirs[a:name])
@@ -85,7 +85,15 @@ set hidden			" show hidden buffers
 
 
 "set foldmethod=syntax	" fold by syntax (only for C langs?)
-set foldmethod=indent	" fold by indentation
+
+" tree-sitter folding or by fold by indentation
+if s:plug_exists('tree-sitter')
+	set foldmethod=expr
+	set foldexpr=nvim_treesitter#foldexpr()
+else
+	echom "tree-sitter plugin not found."
+	set foldmethod=indent
+endif
 set nofoldenable	" dont fold by default
 set foldcolumn=3	" shows a fold column on the lest (symbols: +. -, |)
 set fillchars=fold:\ " disable 'fillchars' in 'foldtext' lines
