@@ -83,8 +83,12 @@ set more			" show '--more--' in listings
 set relativenumber	" relative line numbers
 set hidden			" show hidden buffers
 
-
-"set foldmethod=syntax	" fold by syntax (only for C langs?)
+" This function delivers the string to be displayed over folded lines
+function MyFoldText()
+	let indent = indent(v:foldstart)
+    return repeat(' ', indent + &sw-4) . trim(getline(v:foldstart))
+endfunction
+set foldtext=MyFoldText()
 
 " tree-sitter folding or by fold by indentation
 if s:plug_exists('tree-sitter')
@@ -97,7 +101,6 @@ endif
 set nofoldenable	" dont fold by default
 set foldcolumn=3	" shows a fold column on the lest (symbols: +. -, |)
 set fillchars=fold:\ " disable 'fillchars' in 'foldtext' lines
-set foldtext=\		" disable foldtext() method
 set formatoptions=jl	" Formating option, see :help fo-table for details
 
 set bs=2		" backspacing behaviour. 2 = backspace over indent, eol, start
@@ -184,17 +187,17 @@ if &t_Co > 2 || has('gui_rendering')
 	hi Comment ctermfg=DarkCyan
 	hi clear Error
 	hi Error term=underline cterm=underline ctermfg=Red
-	hi Folded term=underline cterm=underline ctermfg=DarkGrey ctermbg=DarkGrey
-	hi NonText term=bold cterm=bold ctermfg=DarkGrey
-	hi SpecialKey term=none cterm=none ctermfg=DarkGrey
+	hi Folded term=underline ctermfg=White ctermbg=DarkGray
+	hi NonText term=bold cterm=bold ctermfg=DarkGray
+	hi SpecialKey term=NONE cterm=NONE ctermfg=DarkGray
 	hi clear Search
 	hi Search term=reverse cterm=reverse
 
 	" enable a cursorline when in insert mode
 	set cursorline
 	hi CursorLine term=None cterm=None ctermbg=None
-	autocmd InsertEnter * highlight CursorLine cterm=Underline
-	autocmd InsertLeave * highlight CursorLine cterm=None
+	"autocmd InsertEnter * highlight CursorLine cterm=Underline
+	"autocmd InsertLeave * highlight CursorLine cterm=None
 endif
 
 
