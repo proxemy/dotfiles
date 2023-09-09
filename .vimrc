@@ -66,8 +66,7 @@ set nocompatible	" disable vi compatibility
 set number			" show line numbers
 set backspace=indent,eol,start	" allows BS to delete these characters
 set autoindent		" use indentation of the previous line
-set cindent			" use c snytax indentation
-set smartindent
+set nocindent nosmartindent " disable dreaded comment unindentation
 set history=200
 set undolevels=200
 set ruler			" show cursor position in the lower right
