@@ -1,6 +1,13 @@
 [includeIf "gitdir:~/.dotfiles"]
-	# Proxemy user.name and .email
-	path = ~/.gitconfig_Proxemy
+	[user]
+		name = Proxemy
+		email = 33573115+proxemy@users.noreply.github.com
+	[status]
+		showUntrackedFiles = no
+	[remote "origin"]
+		url = https://github.com/proxemy/dotfiles
+		pushurl = git@github.com:proxemy/dotfiles.git
+
 [core]
 	editor = nvim
 [alias]
@@ -10,9 +17,3 @@
 	co = checkout
 [init]
 	defaultBranch = main
-
-# different remote locations for pull/push
-# unfortunately infers with other git invocations besides the dotfiles repo
-#[remote "origin"]
-	#url = https://github.com/proxemy/dotfiles
-	#pushurl = git@github.com:proxemy/dotfiles.git
