@@ -25,17 +25,6 @@ elif bin_exists vim; then
 fi
 
 
-# curl -s https://raw.githubusercontent.com/proxemy/dotfiles/master/.bash_aliases | sed '1,/^###/d;/^###/,$d;s/^# //g' | sh
-### BEGIN dotfiles-init
-alias dotfiles='env git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'	# dotfiles directory swap
-# set -e
-# dotfiles clone --bare --depth=1 https://github.com/proxemy/dotfiles
-# mv $HOME/dotfiles.git $HOME/.dotfiles
-# dotfiles config status.showUntrackedFiles no
-# dotfiles reset --hard
-### END dotfiles-init
-
-
 alias l='ls -CFh --group-directories-first'
 alias ll='l -FGlp'
 alias lll='l -FAZl'
@@ -64,6 +53,7 @@ alias timestamp='date +%F_%H-%M-%S%z'
 alias taill='tail -f $(find /var/log -type f -name "*.*" ! -name "*.journal*" 2>&-)'
 alias svndiff='svn diff --git --patch-compatible | vim -'
 alias ssh-shell='PS1="\[\e[1;30;41m\]SSH\[\e[0m\]:"$PS1; eval $(ssh-agent); trap "ssh-agent -k" EXIT'
+alias dotfiles='env git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 alias    cd..='cd ../'
 alias      ..='cd ../'
