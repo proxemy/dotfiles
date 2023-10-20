@@ -1,12 +1,3 @@
-[includeIf "gitdir:~/.dotfiles"]
-	[user]
-		name = Proxemy
-		email = 33573115+proxemy@users.noreply.github.com
-	[status]
-		showUntrackedFiles = no
-	[remote "origin"]
-		url = https://github.com/proxemy/dotfiles
-		pushurl = git@github.com:proxemy/dotfiles.git
 
 [core]
 	editor = nvim
@@ -17,3 +8,6 @@
 	co = checkout
 [init]
 	defaultBranch = main
+
+[includeIf "gitdir:~/.dotfiles"]
+	path = ~/.config/gitconfig/dotfiles

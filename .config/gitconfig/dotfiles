@@ -1,0 +1,7 @@
+[status]
+	showUntrackedFiles = no
+[remote "origin"]
+	url = https://github.com/proxemy/dotfiles
+	pushurl = git@github.com:proxemy/dotfiles.git
+[include]
+	path = proxemy
