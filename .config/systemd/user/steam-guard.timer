@@ -1,0 +1,11 @@
+# TODO: comment here for systemd activation instruction on fresh systems
+[Unit]
+Description=steam-guard.timer defines the time span in which steam guard is active
+#DefaultDependencies=no
+
+[Timer]
+OnCalendar=Mon..Fri *-*-* 02..17:*
+Persistent=true
+
+[Install]
+WantedBy=multi-user.target
