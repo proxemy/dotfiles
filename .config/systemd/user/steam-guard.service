@@ -2,17 +2,16 @@
 Description=steam-guard.service kills steam and makes it non-exectuable
 #DefaultDependencies=no
 
-# This service abuses the fact that systemd calls oneshot returning services
-# every minute, when a time span is defined. So by defining a '2..15:0' timer
+# This service abuses the fact that systemd calls oneshot services
+# every minute, when a time span is defined. So by defining a '2..17:0' timer
 # this service will get executed repeatedly in that time span.
-# TODO: disable the minutley log spam
+# TODO: disable the minutely log spam
 [Service]
 Type=oneshot
 
 ExecStart=-chmod go-x /usr/games/steam
 ExecStart=-sh -c 'kill -9 $(pidof steam) 2>&-'
 
-# To kee the service "active" for ~58/60 correct systemd status display
 ExecStart=sleep 58
 
 ExecStop=-chmod go+x /usr/games/steam

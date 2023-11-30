@@ -4,6 +4,7 @@ Description=steam-guard.timer defines the time span in which steam guard is acti
 #DefaultDependencies=no
 
 [Timer]
+OnBootSec=0
 OnCalendar=Mon..Fri *-*-* 02..17:*
 Persistent=true
 
