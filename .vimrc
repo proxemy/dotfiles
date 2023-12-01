@@ -40,7 +40,8 @@ else
 	" Keep Plugin commands between vundle#begin/end.
 	" use :PluginInstall to install listed repos
 
-	Plugin 'https://github.com/Valloric/YouCompleteMe'
+	Plugin 'ycm-core/YouCompleteMe' , { 'oninstall': './install.py --clang-completer --rust-completer' }
+
 	Plugin 'https://github.com/nvim-treesitter/nvim-treesitter' , { 'do': ':TSUpdate' }
 
 	" deprecated syntax checker and error display, superseded by treesitter
@@ -48,7 +49,7 @@ else
 
 	" custom syntax highlighting superseded by treesitter language modules
 	"Plugin 'https://github.com/LnL7/vim-nix'
-	"Plugin 'https://github.com/rust-lang/rust.vim'
+	Plugin 'https://github.com/rust-lang/rust.vim'
 
 	" All of your Plugins must be added before the following line
 	call vundle#end()	" required
