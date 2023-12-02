@@ -4,7 +4,15 @@ set -eux
 
 UNITS=( $HOME/.config/systemd/user/*.{service,timer} )
 
-systemd-analyze verify --no-pager ${UNITS[@]}
-sudo systemctl enable --now ${UNITS[@]}
+for u in ${UNITS[@]}; do
+	systemd-analyze verify "$u"
+	sudo systemctl stop $(basename "$u") || true
+	sudo systemctl disable $(basename "$u") || true
+	sudo systemctl enable $(realpath "$u")
+	#sudo systemctl start $(basename "$u")
+done
 
-# systemctl daemon-reload
+#sudo systemctl daemon-reload
+
+systemctl is-enabled steam-guard.timer
+systemctl is-active steam-guard.timer
