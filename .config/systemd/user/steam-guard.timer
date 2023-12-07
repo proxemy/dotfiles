@@ -4,8 +4,6 @@ Description=steam-guard.timer defines the time span in which steam guard is acti
 [Timer]
 OnBootSec=0
 OnCalendar=Mon..Fri *-*-* 02..17:*
-Persistent=true
-Unit=steam-guard.service
 
 [Install]
 WantedBy=timers.target
