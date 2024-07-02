@@ -1,0 +1,46 @@
+# hx --gramar {fetch,build}
+# rustup compnent add rls rust-analyzer clippy rust-std
+
+theme = "base16_transparent"
+
+#TODO:
+# * interactive highlight of search patterns (vim-like '#')
+
+[editor]
+mouse = true
+rulers = [ 80 ]
+#bufferline = "always"
+popup-border = "all"
+#line-number = "relative"
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.statusline]
+left = [
+  "spinner", "mode",
+  "file-modification-indicator", "file-name", "read-only-indicator",
+]
+center = []
+right = [ "register", "diagnostics", "position", "position-percentage" ]
+ 
+[editor.lsp]
+enable = true
+display-messages = true
+
+[editor.whitespace.render]
+space= "all"
+tab= "all"
+newline = "all"
+
+[editor.whitespace.characters]
+space="·"
+tab="▸"
+tabpad="▸"
+newline="¬"
+
+[keys.normal]
+ret = "goto_next_paragraph"
+backspace = "goto_prev_paragraph"
