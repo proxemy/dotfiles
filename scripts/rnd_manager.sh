@@ -21,9 +21,16 @@ SIZE="${SIZE:-0}"
 
 
 test -f "$SOURCE" || { echo "SOURCE (\$1) file not found"; exit 1; }
-test -f "$TARGET" || { echo "TARGET (\$2) file not found"; exit 1; }
 test "$SIZE" -ne 0 || { echo "\$SIZE cannot be zero/undefined"; exit 1; }
 [ "$SOURCE" != "$TARGET" ] || { echo "Target and source file cannot be identical"; exit 1; }
+
+if [ -f "$TARGET" ]; then
+	read -p "Target file '$TARGET' already exists! Overwrite? [y/N]" inp
+	if [[ ! "y|Y" =~ "$inp" ]]; then
+		echo Aborting
+		exit
+	fi
+fi
 
 
 echo -n "Analyzing source file "
