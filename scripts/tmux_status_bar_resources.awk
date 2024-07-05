@@ -19,7 +19,7 @@ END {
 	getline < "/proc/uptime"; # overwrites $0 from orig stdin (gnutop)
 	printf(\
 		cpu ram \
-		"#[fg=yellow,dim]%s%d:%02d:%02d",\
+		"#[fg=yellow,dim]up:%s%d:%02d:%02d",\
 		($1/60/60/24 <= 0 ? int($1/60/60/24)":" : ""),\
 		$1/60/60%24,\
 		$1/60%60,\
