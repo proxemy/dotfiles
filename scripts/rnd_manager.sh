@@ -3,28 +3,20 @@
 set -euo pipefail
 
 
-on_exit()
-{
-	echo "Done"
-	echo -e "\x44\x4f\x4e\x54\x20\x46\x4f\x52\x47\x45\x54\x20\x54\x4f\x20\x43\x4c\x45\x41\x52\x20\x48\x49\x53\x54\x4f\x52\x59 \x57\x49\x54\x48"
-	echo -e "\x2\x73\x6f\x75\x72\x63\x65\x20\x63\x6c\x65\x61\x72\x5f\x68\x69\x73\x74\x6f\x72\x79\x2e\x73\x68"
-}
-trap on_exit EXIT ERR
-
-
-echo Start
-
 SOURCE="${1:-'\$1'}"
 TARGET="${2:-'\$2'}"
 OFFSET=0
-SIZE="${SIZE:-0}"
+SIZE=0
 
+
+read -rs -i "0" -p "Please enter size: " SIZE
 
 test -f "$SOURCE" || { echo "SOURCE (\$1) file not found"; exit 1; }
 test "$SIZE" -ne 0 || { echo "\$SIZE cannot be zero/undefined"; exit 1; }
 [ "$SOURCE" != "$TARGET" ] || { echo "Target and source file cannot be identical"; exit 1; }
 
 if [ -f "$TARGET" ]; then
+	echo
 	read -p "Target file '$TARGET' already exists! Overwrite? [y/N]" inp
 	if [[ ! "y|Y" =~ "$inp" ]]; then
 		echo Aborting
