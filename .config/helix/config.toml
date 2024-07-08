@@ -44,3 +44,4 @@ newline="¬"
 [keys.normal]
 ret = "goto_next_paragraph"
 backspace = "goto_prev_paragraph"
+del = "delete_selection"
