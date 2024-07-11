@@ -41,6 +41,9 @@ else
 	" use :PluginInstall to install listed repos
 
 	Plugin 'ycm-core/YouCompleteMe' , { 'oninstall': './install.py --clang-completer --rust-completer' }
+	" TO INSTALL RUST LSP:
+	" rustup component add rls rust-analysis rust-src
+	" ln -s ~/.rustup/toolchains/*x86_64-unknown-linux-gnu/ ./rls
 
 	Plugin 'https://github.com/nvim-treesitter/nvim-treesitter' , { 'do': ':TSUpdate' }
 
