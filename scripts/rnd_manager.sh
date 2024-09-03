@@ -3,8 +3,8 @@
 set -euo pipefail
 
 
-SOURCE="${1:-'\$1'}"
-TARGET="${2:-'\$2'}"
+SOURCE="${1:-$ARG1_SOURCE_FILE}"
+TARGET="${2:-$ARG2_TARGET_FILE}"
 OFFSET=0
 SIZE=0
 
@@ -44,14 +44,14 @@ fi
 
 echo "Writing target file ..."
 if [[ $SIZE -gt 0 ]]; then
-	echo Adding ...
+	echo "Adding $SIZE bytes"
 	{
 		head --bytes="$OFFSET" "$SOURCE";
 		head --bytes="$SIZE" < /dev/urandom;
 		tail --bytes=+$(("$OFFSET" + 1)) "$SOURCE";
 	} > "$TARGET"
 elif [[ $SIZE -lt 0 ]]; then
-	echo Removing ...
+	echo "Removing ... $SIZE bytes"
 	{
 		head --bytes=$(( "$OFFSET" )) "$SOURCE";
 		tail --bytes=+$(( "$OFFSET" + ("$SIZE" * -1) + 1 )) "$SOURCE"
