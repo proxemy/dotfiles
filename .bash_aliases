@@ -72,6 +72,7 @@ alias .......='cd ../../../../../../'
 bin_exists nix     && alias nix-repl='nix repl "<nixpkgs>"'
 bin_exists ss      && alias ports='ss -tulpan'
 bin_exists netstat && alias ports='netstat -tulanp'
+bin_exists steam   && alias steam='steam -silent'
 
 
 mcd() { mkdir -p "$1" && cd "$1"; }	# mcd: Makes new Dir and jumps inside
