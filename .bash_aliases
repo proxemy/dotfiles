@@ -54,6 +54,7 @@ alias taill='tail -f $(find /var/log -type f -name "*.*" ! -name "*.journal*" 2>
 alias svndiff='svn diff --git --patch-compatible | vim -'
 alias ssh-shell='PS1="\[\e[1;30;41m\]SSH\[\e[0m\]:"$PS1; eval $(ssh-agent); trap "ssh-agent -k" EXIT'
 alias dotfiles='env git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias beeep='speaker-test -t sine -f 1000 -l 1 & sleep .2 && kill -9 $!'
 
 alias    cd..='cd ../'
 alias      ..='cd ../'
