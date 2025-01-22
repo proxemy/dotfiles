@@ -38,7 +38,7 @@ alias grep='grep --color=auto'
 alias g='grep'
 alias ml='mount -l | column -t'
 alias gdb='gdb --tui'
-alias sudo='sudo -E'
+#alias sudo='sudo -E' # preserving user env might be a vulnerability and sudoing should not be ergonomic
 alias tmux='tmux -2'
 alias tree='tree -C'
 
