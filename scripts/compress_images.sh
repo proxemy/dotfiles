@@ -9,6 +9,7 @@ set -euo pipefail
 
 SOURCE=${1:-$ARG1_SOURCE_FOLDER_OR_IMAGE_FILE}
 BASE_DIR=$(dirname "$SOURCE")
+DEBUG=${DEBUG:-0}
 FFMPEG_ARGS=${2:-"-qscale:v 2"}
 SOURCE_FILES=() # poplated below
 
@@ -56,6 +57,12 @@ if ! [[ "${cont:-"Y"}" =~ ^Y|y$ ]]; then
 fi
 
 
+FFMPEG_LOGLEVEL="error"
+if [[ $DEBUG -ne 0 ]]; then
+	FFMPEG_LOGLEVEL="info"
+fi
+
+
 for src_f in "${SOURCE_FILES[@]}"; do
 
 	if ! [[ -f "$src_f" ]]; then
@@ -75,12 +82,15 @@ for src_f in "${SOURCE_FILES[@]}"; do
 	size_tmp=$(du -b "$tmp_f" | cut -f1)
 
 	if [[ $ret -ne 0 ]] || [[ $size_tmp -le 0 ]]; then
-		echo -e \nCompression failed
-		continue
+		echo -e \nffmpeg failed. Exiting.
+		exit 1
 	fi
 
 	if [[ $size_tmp -lt $size_src ]]; then
-		echo -e " ... replacing!"
+		if [[ $DEBUG -ne 0 ]]; then
+			echo -n " -> size (old/new): $size_src / $size_tmp"
+		fi
+		echo " ... replacing!"
 		cp "$tmp_f" "$src_f"
 	else
 		echo
