@@ -11,7 +11,7 @@ SIZE=0
 
 test -f "$SOURCE" || { echo "SOURCE (\$1) file not found"; exit 1; }
 [ "$SOURCE" != "$TARGET" ] || { echo "Target and source file cannot be identical"; exit 1; }
-read -rs -i "0" -p "Please enter size: " SIZE
+read -r -p "Please enter size: " SIZE
 test "$SIZE" -ne 0 || { echo "\$SIZE cannot be zero/undefined"; exit 1; }
 
 if [ -f "$TARGET" ]; then
