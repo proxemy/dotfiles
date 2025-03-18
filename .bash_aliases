@@ -11,7 +11,7 @@ export PS1="\
 export HISTIGNORE='pwd,exit,fg,bg,clear,jobs,l,ll,lll,history'
 #export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND};history -c;history -a;history -r"
 export PAGER='less'
-export LESS='-FSiM -j.5 --mouse --wheel-lines 5'
+export LESS='-FSMri -j.5 --mouse --wheel-lines 5'
 export EDITOR='vim'
 
 # helper functions
