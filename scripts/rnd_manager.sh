@@ -26,11 +26,13 @@ fi
 
 echo -n "Analyzing source file "
 hex_dump=$(xxd -p "$SOURCE" | tr -d '\n')
+header_hash_size=32
 for i in $(seq 0 500); do
 	echo -n "."
 	sha=$(head --byte=+"$i" "$SOURCE" | sha256sum -b | cut -f1 -d' ')
 	if [[ "$hex_dump" =~ "$sha" ]]; then
-		OFFSET=$(($i + 32))
+		#OFFSET beyond KDBX header + SIZE
+		OFFSET=$(($i + $header_hash_size + ${SIZE#-}))
 		echo -e "\nFound hash at '$i': $sha"
 		break
 	fi
