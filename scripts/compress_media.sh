@@ -7,10 +7,10 @@
 set -euo pipefail
 
 
-SOURCE=${1:-$ARG1_SOURCE_FOLDER_OR_IMAGE_FILE}
+SOURCE=${1:-$ARG1_PATH_SOURCE_FOLDER_OR_FILE}
 BASE_DIR=$(dirname "$SOURCE")
 DEBUG=${DEBUG:-0}
-FFMPEG_ARGS=${2:-"-qscale:v 2"}
+FFMPEG_ARGS=${2:-"-qscale:v 2 -crf 30"}
 SOURCE_FILES=() # poplated below
 
 
@@ -38,7 +38,7 @@ fi
 # dont work well together, so we need to separate array items with null bytes
 while IFS= read -r -d $'\0'; do
 	mime_type=$(file --mime-type "$REPLY")
-	if [[ "$mime_type" =~ ": image" ]]; then
+	if [[ "$mime_type" =~ :\ image|:\ video ]]; then
 		SOURCE_FILES+=("$REPLY")
 	fi
 done < <(find "$BASE_DIR" -iname "$FIND_NAME" -type f -print0)
