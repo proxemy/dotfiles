@@ -6,11 +6,13 @@
 
 set -euo pipefail
 
+renice -n 19 -p $BASHPID
+
 
 SOURCE=${1:-$ARG1_PATH_SOURCE_FOLDER_OR_FILE}
+shift 1
 BASE_DIR=$(dirname "$SOURCE")
 DEBUG=${DEBUG:-0}
-FFMPEG_ARGS=${2:-"-qscale:v 2 -crf 30"}
 SOURCE_FILES=() # poplated below
 
 
@@ -20,12 +22,27 @@ if ! [[ -d "$SOURCE" || -f $SOURCE ]]; then
 fi
 
 
+while getopts "f:t:d" o; do
+	case "$o" in
+		f)
+			FFMPEG_ARGS_EXTRA="$OPTARG"
+			;;
+		t)
+			TMP_DIR="$OPTARG"
+			;;
+		d)
+			DEBUG=1
+			;;
+	esac
+done
+
+
 on_exit(){
 	echo Cleaning up tmp dir: "${TMP_DIR:-''}"
 	test -d "${TMP_DIR:-''}" && rm -rf "$TMP_DIR"
 }
 trap on_exit EXIT
-TMP_DIR="${3:-$(mktemp -dp /dev/shm)}"
+TMP_DIR="$(mktemp -dp ${TMP_DIR:-/dev/shm})"
 
 
 if [[ -f "$SOURCE" ]]; then
@@ -62,6 +79,8 @@ if [[ $DEBUG -ne 0 ]]; then
 	FFMPEG_LOGLEVEL="info"
 fi
 
+FFMPEG_ARGS="-qscale:v 2 ${FFMPEG_ARGS_EXTRA:-}"
+
 
 for src_f in "${SOURCE_FILES[@]}"; do
 
@@ -76,7 +95,7 @@ for src_f in "${SOURCE_FILES[@]}"; do
 
 	tmp_f=$(mktemp -p "$TMP_DIR" -t XXX."$base_name")
 
-	ret=$(ffmpeg -y -loglevel error -i "$src_f" $FFMPEG_ARGS "$tmp_f")
+	ret=$(ffmpeg -y -loglevel "$FFMPEG_LOGLEVEL" -i "$src_f" $FFMPEG_ARGS "$tmp_f")
 
 	size_src=$(du -b "$src_f" | cut -f1)
 	size_tmp=$(du -b "$tmp_f" | cut -f1)
