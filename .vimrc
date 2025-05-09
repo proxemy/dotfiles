@@ -211,9 +211,9 @@ endif
 
 if s:plug_exists('YCM')
 	let g:ycm_show_diagnostics_ui = 0 " needed because YCM disables all syntastic checkers by default
+	let g:ycm_autoclose_preview_window_after_completion = 1
 endif
 
-" syntastic plugin is disabled
 "if s:plug_exists('syntastic')
 	"let g:syntastic_aggregate_errors = 1 " show error from all checkers
 	"let g:syntastic_cpp_compiler = 'g++'
