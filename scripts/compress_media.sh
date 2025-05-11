@@ -93,7 +93,12 @@ for src_f in "${SOURCE_FILES[@]}"; do
 
 	base_name=$(basename "$src_f")
 
-	tmp_f=$(mktemp -p "$TMP_DIR" -t XXX."$base_name")
+	if ! [[ "$base_name" =~ \..{3,4} ]]; then
+		echo -e "no file extension found, but required by ffmpeg\n---SKIPPING FILE: ${base_name}"
+		continue
+	fi
+
+	tmp_f=$(mktemp -p "$TMP_DIR" -t "XXXXX.")"$base_name"
 
 	ret=$(ffmpeg -y -loglevel "$FFMPEG_LOGLEVEL" -i "$src_f" $FFMPEG_ARGS "$tmp_f")
 
