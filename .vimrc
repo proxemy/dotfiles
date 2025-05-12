@@ -9,7 +9,8 @@ let s:plug_home = expand('~/.vim/bundle/')
 let s:plug_dirs = {
 	\ 'vundle':		s:plug_home . 'Vundle.vim',
 	\ 'YCM':		s:plug_home . 'YouCompleteMe',
-	\ 'tree-sitter':s:plug_home . 'nvim-treesitter'
+	\ 'tree-sitter':s:plug_home . 'nvim-treesitter',
+	\ 'syntastic':  s:plug_home . 'syntastic',
 \ }
 function! s:plug_exists(name)
 	return isdirectory(s:plug_dirs[a:name])
@@ -48,7 +49,7 @@ else
 	Plugin 'https://github.com/nvim-treesitter/nvim-treesitter' , { 'do': ':TSUpdate' }
 
 	" deprecated syntax checker and error display, superseded by treesitter
-	"Plugin 'https://github.com/vim-syntastic/syntastic'
+	Plugin 'https://github.com/vim-syntastic/syntastic'
 
 	" custom syntax highlighting superseded by treesitter language modules
 	"Plugin 'https://github.com/LnL7/vim-nix'
@@ -214,20 +215,28 @@ if s:plug_exists('YCM')
 	let g:ycm_autoclose_preview_window_after_completion = 1
 endif
 
-"if s:plug_exists('syntastic')
-	"let g:syntastic_aggregate_errors = 1 " show error from all checkers
-	"let g:syntastic_cpp_compiler = 'g++'
-	"let g:syntastic_cpp_compiler_options = ' -std=c++1z -stdlib=libc++'
+if s:plug_exists('syntastic')
+	let g:syntastic_aggregate_errors = 1 " show error from all checkers
+	let g:syntastic_cpp_compiler = 'g++'
+	let g:syntastic_cpp_compiler_options = ' -std=c++1z -stdlib=libc++'
 
 	" pip3 install neovim pynvim flake8 jedi autopep8
-	"let g:syntastic_python_checkers=['flake8', 'python3']
-	"let g:syntastic_python_flake8_args='--ignore W,E117,E201,E202,E203,E226,E228,E242,E261,E302,E303,E128,E124,E731,E265,E722'
+	let g:syntastic_python_checkers=['flake8', 'python3']
+	let g:syntastic_python_flake8_args='--ignore W191,W391,E117,E201,E202,E203,E226,E228,E242,E261,E302,E303,E128,E124,E731,E265,E222,E722,E221,E241,E305,E501'
 
-	"let g:syntastic_always_populate_loc_list = 1
-	"let g:syntastic_auto_loc_list = 1
-	"let g:syntastic_check_on_open = 1
-	"let g:syntastic_check_on_wq = 0
-"endif
+	let g:syntastic_always_populate_loc_list = 1
+	let g:syntastic_auto_loc_list = 1
+	let g:syntastic_check_on_open = 1
+	let g:syntastic_check_on_wq = 0
+
+	" dynamic loclist size
+	" see :h syntastic-loclist-callback
+	function! SyntasticCheckHook(errors)
+		if !empty(a:errors)
+			let g:syntastic_loc_list_height = min([len(a:errors), 10])
+		endif
+	endfunction
+endif
 
 let g:git_branch = 'non-git'
 function! Get_git_branch()
