@@ -45,6 +45,7 @@ else
 	" TO INSTALL RUST LSP:
 	" rustup component add rls rust-analysis rust-src
 	" ln -s ~/.rustup/toolchains/*x86_64-unknown-linux-gnu/ ./rls
+	" ALT: ./install.py --rust-completer --rust-toolchain-version stable-x86_64-unknown-linux-gnu
 
 	Plugin 'https://github.com/nvim-treesitter/nvim-treesitter' , { 'do': ':TSUpdate' }
 
@@ -213,6 +214,7 @@ endif
 if s:plug_exists('YCM')
 	let g:ycm_show_diagnostics_ui = 0 " needed because YCM disables all syntastic checkers by default
 	let g:ycm_autoclose_preview_window_after_completion = 1
+	let g:ycm_max_num_candidates = 0 " unlimited autocomplete popup list
 endif
 
 if s:plug_exists('syntastic')
