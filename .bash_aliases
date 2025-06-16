@@ -24,25 +24,24 @@ elif bin_exists vim; then
 	EDITOR='vim'
 fi
 
-
+# ls
 alias l='ls -CFh --group-directories-first'
 alias ll='l -FGlp'
 alias lll='l -FAZl'
 alias ls='ls --color=always'
 
-# parameterized commands
+# shadows
 alias cp='cp -iv'
 alias mv='mv -iv'
 alias mkdir='mkdir -pv'
 alias grep='grep --color=auto'
 alias g='grep'
-alias ml='mount -l | column -t'
 alias gdb='gdb --tui'
 #alias sudo='sudo -E' # preserving user env might be a vulnerability and sudoing should not be ergonomic
 alias tmux='tmux -2'
 alias tree='tree -C'
 
-# new commands as aliases
+# tools
 alias edit='vim'
 alias which='type -all'
 alias path='echo -e ${PATH//:/\\n}'
@@ -50,11 +49,15 @@ alias fix_stty='stty sane'
 alias psall='ps auxf | sort -nr -k 4'
 alias noexif='exiftool -all='
 alias timestamp='date +%F_%H-%M-%S%z'
-alias taill='tail -f $(find /var/log -type f -name "*.*" ! -name "*.journal*" 2>&-)'
 alias svndiff='svn diff --git --patch-compatible | vim -'
 alias ssh-shell='PS1="\[\e[1;30;41m\]SSH\[\e[0m\]:"$PS1; eval $(ssh-agent); trap "ssh-agent -k" EXIT'
 alias dotfiles='env git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias beeep='speaker-test -t sine -f 1000 -l 1 & sleep .2 && kill -9 $!'
+alias beep='speaker-test -t sine -f 1000 -l 1 & sleep .2 && kill -9 $!'
+
+# observability
+alias ml='mount -l | column -t'
+alias ttail='tail -f $(find /var/log -type f | grep -P "(log$|json$)")'
+alias sstrace='strace -fintrCDTYyyv -s128'
 
 alias    cd..='cd ../'
 alias      ..='cd ../'
