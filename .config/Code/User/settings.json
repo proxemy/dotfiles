@@ -1,0 +1,11 @@
+{
+    "telemetry.feedback.enabled": false,
+    "telemetry.telemetryLevel": "off",
+    "terminal.integrated.defaultProfile.linux": "tmux",
+    "terminal.integrated.inheritEnv": false,
+    "window.newWindowProfile": "Default",
+    "editor.tabSize": 2,
+    "editor.renderWhitespace": "all",
+    "editor.insertSpaces": false,
+    "extensions.ignoreRecommendations": true,
+}
