@@ -55,7 +55,7 @@ alias dotfiles='env git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias beep='$(speaker-test -t sine -f 1000 -l 1 & sleep .2 && kill -9 $!)'
 
 # observability
-alias ml='mount -l | column -t'
+alias ml='mount | grep -vE "(^nsfs|\s+on\s+/snap/)" | column -t'
 alias ttail='tail -f $(find /var/log -type f | grep -P "(log$|json$)")'
 alias sstrace='strace -fintrCDTYyyv -s128'
 
