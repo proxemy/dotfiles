@@ -79,7 +79,7 @@ if [[ $DEBUG -ne 0 ]]; then
 	FFMPEG_LOGLEVEL="info"
 fi
 
-FFMPEG_ARGS="-qscale:v 2 ${FFMPEG_ARGS_EXTRA:-}"
+FFMPEG_ARGS="-crf 23 -qscale:v 1.5 ${FFMPEG_ARGS_EXTRA:-}"
 
 
 for src_f in "${SOURCE_FILES[@]}"; do
