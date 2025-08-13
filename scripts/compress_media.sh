@@ -9,8 +9,7 @@ set -euo pipefail
 renice -n 19 -p $BASHPID
 
 
-SOURCE=${1:-$ARG1_PATH_SOURCE_FOLDER_OR_FILE}
-shift 1
+SOURCE=${1:-"."} # default: current dir
 BASE_DIR=$(dirname "$SOURCE")
 DEBUG=${DEBUG:-0}
 SOURCE_FILES=() # poplated below
@@ -46,19 +45,25 @@ TMP_DIR="$(mktemp -dp ${TMP_DIR:-/dev/shm})"
 
 
 if [[ -f "$SOURCE" ]]; then
-	FIND_NAME="$(basename "$SOURCE")"
-else
+	SOURCE_FILES+=("$SOURCE")
+elif [[ -d "$SOURCE" ]]; then
+	BASE_DIR="$SOURCE"
 	FIND_NAME="*"
+else
+	FIND_NAME="${SOURCE:-*}"
 fi
 
-# because of weird file name characters, find results and bash arrays/loops
-# dont work well together, so we need to separate array items with null bytes
-while IFS= read -r -d $'\0'; do
-	mime_type=$(file --mime-type "$REPLY")
-	if [[ "$mime_type" =~ :\ image|:\ video ]]; then
-		SOURCE_FILES+=("$REPLY")
-	fi
-done < <(find "$BASE_DIR" -iname "$FIND_NAME" -type f -print0)
+
+if [[ ${#SOURCE_FILES[@]} -eq 0 ]]; then
+	# because of weird file name characters, find results and bash arrays/loops
+	# dont work well together, so we need to separate array items with null bytes
+	while IFS= read -r -d $'\0'; do
+		mime_type=$(file --mime-type "$REPLY")
+		if [[ "$mime_type" =~ :\ image|:\ video ]]; then
+			SOURCE_FILES+=("$REPLY")
+		fi
+	done < <(find "$BASE_DIR" -iname "$FIND_NAME" -type f -print0)
+fi
 
 
 if [[ ${#SOURCE_FILES[@]} -le 0 ]]; then
@@ -66,8 +71,14 @@ if [[ ${#SOURCE_FILES[@]} -le 0 ]]; then
 	exit 1
 fi
 
-
 echo Found ${#SOURCE_FILES[@]} valid targets
+read -p "List candidates? [y/N]" -a cont -n 1
+if [[ "${cont:-"N"}" =~ ^Y|y$ ]]; then
+	printf '%s\n' "${SOURCE_FILES[@]}"
+	#echo -e "\n"${SOURCE_FILES[@]}
+	echo
+fi
+
 read -p "Continue? [Y/n]" -a cont -n 1
 if ! [[ "${cont:-"Y"}" =~ ^Y|y$ ]]; then
 	exit 0
