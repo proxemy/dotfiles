@@ -73,7 +73,7 @@ alias      .6='cd ../../../../../../'
 alias .......='cd ../../../../../../'
 
 
-bin_exists nix     && alias nix-repl='nix repl "<nixpkgs>"'
+bin_exists nix     && alias nix-repl='nix repl --expr "import <nixpkgs> {}" pkgs'
 bin_exists ss      && alias ports='ss -tulpan'
 bin_exists netstat && alias ports='netstat -tulanp'
 bin_exists steam   && alias steam='steam -silent'
