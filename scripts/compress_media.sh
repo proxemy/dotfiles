@@ -109,25 +109,33 @@ trap on_exit EXIT
 TMP_DIR="$(mktemp -dp "$TMP_DIR")"
 
 
+# single file processing
 if [[ -f "$SOURCE" ]]; then
 	SOURCE_FILES+=("$SOURCE")
+
+# find all media files in a directory
 elif [[ -d "$SOURCE" ]]; then
-	BASE_DIR="$SOURCE"
-	FIND_NAME="*"
-else
-	FIND_NAME="${SOURCE:-*}"
-fi
 
+	if [[ $RECURSIVE -ne 0 ]]; then
+		max_depth=""
+	else
+		max_depth="-maxdepth 1"
+	fi
 
-if [[ ${#SOURCE_FILES[@]} -eq 0 ]]; then
 	# because of weird file name characters, find results and bash arrays/loops
 	# dont work well together, so we need to separate array items with null bytes
 	while IFS= read -r -d $'\0'; do
-		mime_type=$(file --mime-type "$REPLY")
+		source_file="$REPLY"
+		mime_type=$(file --mime-type "$source_file")
+		#echo SRC: "$source_file" MIME: "$mime_type"
 		if [[ "$mime_type" =~ :\ image|:\ video ]]; then
-			SOURCE_FILES+=("$REPLY")
+			SOURCE_FILES+=("$source_file")
 		fi
-	done < <(find "$BASE_DIR" -iname "$FIND_NAME" -type f -print0)
+	done < <(find "$SOURCE" $max_depth -type f -print0)
+
+else
+	echo "Invalid source argument: $SOURCE"
+	exit 1
 fi
 
 
