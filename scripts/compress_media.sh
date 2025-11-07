@@ -18,7 +18,7 @@ FFMPEG_ARGS="-crf 23 -qscale:v 1.5"
 FFMPEG_EXTRA_ARGS=""
 TMP_DIR="/dev/shm"
 KEEP_TMP_DIR=0
-DEBUG=0
+VERBOSE=0
 PRINT_HELP_AND_EXIT=0
 
 # runtime variables populate below
@@ -74,9 +74,9 @@ while getopts $OPT_FLAGS o; do
 			print_opt_help "-k: Flag to keep the TMP directory." "$KEEP_TMP_DIR"
 			KEEP_TMP_DIR=1
 			;;
-		d)
-			print_opt_help "-d: Flag to print debug messages." "$DEBUG"
-			DEBUG=1
+		v)
+			print_opt_help "-d: Flag to print verbose messages." "$VERBOSE"
+			VERBOSE=1
 			;;
 		h) ;;
 	esac
@@ -84,7 +84,7 @@ done
 [[ PRINT_HELP_AND_EXIT -ne 0 ]] && exit 255;
 
 
-SOURCE="${@: -1}" # default: current dir
+SOURCE="${@: -1}"
 BASE_DIR=$(dirname "$SOURCE")
 if ! [[ -d "$SOURCE" || -f $SOURCE ]]; then
 	echo Source file or folder does not exist: "$SOURCE"
@@ -146,7 +146,7 @@ fi
 
 
 FFMPEG_LOGLEVEL="error"
-if [[ $DEBUG -ne 0 ]]; then
+if [[ $VERBOSE -ne 0 ]]; then
 	FFMPEG_LOGLEVEL="info"
 fi
 
@@ -182,7 +182,7 @@ for src_f in "${SOURCE_FILES[@]}"; do
 	fi
 
 	if [[ $size_tmp -lt $size_src ]]; then
-		if [[ $DEBUG -ne 0 ]]; then
+		if [[ $VERBOSE -ne 0 ]]; then
 			echo -n " -> size (old/new): $size_src / $size_tmp"
 		fi
 		echo " ... replacing!"
