@@ -11,10 +11,19 @@ renice -n 19 -p $BASHPID
 
 
 OPT_FLAGS="rfetkdh"
-PRINT_HELP_AND_EXIT=0
-DEBUG=0
-CLEANUP=1
+
+# default option values
 RECURSIVE=0
+FFMPEG_ARGS="-crf 23 -qscale:v 1.5"
+FFMPEG_EXTRA_ARGS=""
+TMP_DIR="/dev/shm"
+KEEP_TMP_DIR=0
+DEBUG=0
+PRINT_HELP_AND_EXIT=0
+
+# runtime variables populate below
+SOURCE=""
+SOURCE_FILES=() # list of single files
 
 
 # init help display
@@ -34,7 +43,7 @@ fi
 
 
 print_opt_help() {
-	local TEXT="${1:-}"
+	local TEXT="$1"
 	local DEFAULT="${2:-}"
 	if [[ $PRINT_HELP_AND_EXIT -ne 0 ]]; then
 		echo "  "$TEXT "Default: '$DEFAULT'"
@@ -46,41 +55,36 @@ print_opt_help() {
 while getopts $OPT_FLAGS o; do
 	case "$o" in
 		r)
+			print_opt_help "-r: Flag to traverse down a given target folder." "$RECURSIVE"
 			RECURSIVE=1
-			print_opt_help "-r: Traverse down a given target folder." "off"
 			;;
 		f)
-			default="-crf 23 -qscale:v 1.5"
-			FFMPEG_ARGS="${OPTARG:-$default}"
-			print_opt_help "-f ARGS: Arguments passed to ffmpeg." "$default"
+			print_opt_help "-f ARGS: Arguments passed to ffmpeg." "$FFMPEG_ARGS"
+			FFMPEG_ARGS="${OPTARG:-$FFMPEG_ARGS}"
 			;;
 		e)
-			FFMPEG_EXTRA_ARGS="${OPTARG:-}"
-			print_opt_help "-e ARGS: Extra ffmpeg args to get appended to regular args."
+			print_opt_help "-e ARGS: Extra ffmpeg args to get appended to regular args." "$FFMPEG_EXTRA_ARGS"
+			FFMPEG_EXTRA_ARGS="${OPTARG:-$FFMPEG_EXTRA_ARGS}"
 			;;
 		t)
-			default="/dev/shm"
-			TMP_DIR="${OPTARG:-$default}"
-			print_opt_help "-t DIR: TMP directory to store intermediates." "$default"
+			print_opt_help "-t DIR: TMP directory to store intermediates." "$TMP_DIR"
+			TMP_DIR="${OPTARG:-$TMP_DIR}"
 			;;
 		k)
-			CLEANUP=0
-			print_opt_help "-k: Flag to keep the TMP directory." "off"
+			print_opt_help "-k: Flag to keep the TMP directory." "$KEEP_TMP_DIR"
+			KEEP_TMP_DIR=1
 			;;
 		d)
+			print_opt_help "-d: Flag to print debug messages." "$DEBUG"
 			DEBUG=1
-			print_opt_help "-d: Flag to print debug messages." "off"
 			;;
 		h) ;;
 	esac
 done
-
-
 [[ PRINT_HELP_AND_EXIT -ne 0 ]] && exit 255;
 
 
-SOURCE_FILES=() # poplated below
-SOURCE=${1:-"."} # default: current dir
+SOURCE="${@: -1}" # default: current dir
 BASE_DIR=$(dirname "$SOURCE")
 if ! [[ -d "$SOURCE" || -f $SOURCE ]]; then
 	echo Source file or folder does not exist: "$SOURCE"
@@ -88,9 +92,8 @@ if ! [[ -d "$SOURCE" || -f $SOURCE ]]; then
 fi
 
 
-
 on_exit() {
-	if [[ $CLEANUP -ne 0 ]]; then
+	if [[ $KEEP_TMP_DIR -eq 0 ]]; then
 		echo Cleaning up tmp dir: "${TMP_DIR:-''}"
 		test -d "${TMP_DIR:-''}" && rm -rf "$TMP_DIR"
 	else
@@ -98,7 +101,7 @@ on_exit() {
 	fi
 }
 trap on_exit EXIT
-TMP_DIR="$(mktemp -dp ${TMP_DIR:-/dev/shm})"
+TMP_DIR="$(mktemp -dp "$TMP_DIR")"
 
 
 if [[ -f "$SOURCE" ]]; then
