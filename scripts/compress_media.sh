@@ -19,6 +19,7 @@ FFMPEG_EXTRA_ARGS=""
 TMP_DIR="/dev/shm"
 KEEP_TMP_DIR=0
 VERBOSE=0
+DRY_RUN=0
 PRINT_HELP_AND_EXIT=0
 
 # runtime variables populate below
@@ -75,8 +76,12 @@ while getopts $OPT_FLAGS o; do
 			KEEP_TMP_DIR=1
 			;;
 		v)
-			print_opt_help "-d: Flag to print verbose messages." "$VERBOSE"
+			print_opt_help "-v: Flag to print verbose messages." "$VERBOSE"
 			VERBOSE=1
+			;;
+		d)
+			print_opt_help "-d: Flag for a dry run that does not replace files." "$DRY_RUN"
+			DRY_RUN=1
 			;;
 		h) ;;
 	esac
@@ -185,8 +190,12 @@ for src_f in "${SOURCE_FILES[@]}"; do
 		if [[ $VERBOSE -ne 0 ]]; then
 			echo -n " -> size (old/new): $size_src / $size_tmp"
 		fi
-		echo " ... replacing!"
-		cp "$tmp_f" "$src_f"
+		if [[ $DRY_RUN -ne 0 ]]; then
+			echo "... skipping replacement!"
+		else
+			echo " ... replacing!"
+			cp "$tmp_f" "$src_f"
+		fi
 	else
 		echo
 	fi
