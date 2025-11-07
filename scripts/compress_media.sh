@@ -6,38 +6,87 @@
 
 set -euo pipefail
 
+# TODO: renice just before ffmpeg exec
 renice -n 19 -p $BASHPID
 
 
+OPT_FLAGS="rfetkdh"
+PRINT_HELP_AND_EXIT=0
+DEBUG=0
+CLEANUP=1
+RECURSIVE=0
+
+
+# init help display
+if [[ $@ =~ "-h" ]]; then
+	PRINT_HELP_AND_EXIT=1
+	echo -e \
+		"Usage: '$0' [OPTS] TARGET_PATH \n"\
+		"Recompress media files inplace with ffmpeg.\n"\
+		"Single files, entire directories with optinal recursion.\nOptions:"
+	if [[ "$@" == "-h" ]]; then
+		# set all option flags to display all help messages
+		for ((i=0; i<${#OPT_FLAGS}; i++)); do
+			set -- "$@" "-${OPT_FLAGS:i:1}"
+		done
+	fi
+fi
+
+
+print_opt_help() {
+	local TEXT="${1:-}"
+	local DEFAULT="${2:-}"
+	if [[ $PRINT_HELP_AND_EXIT -ne 0 ]]; then
+		echo "  "$TEXT "Default: '$DEFAULT'"
+	fi
+}
+
+
+# parse arguments
+while getopts $OPT_FLAGS o; do
+	case "$o" in
+		r)
+			RECURSIVE=1
+			print_opt_help "-r: Traverse down a given target folder." "off"
+			;;
+		f)
+			default="-crf 23 -qscale:v 1.5"
+			FFMPEG_ARGS="${OPTARG:-$default}"
+			print_opt_help "-f ARGS: Arguments passed to ffmpeg." "$default"
+			;;
+		e)
+			FFMPEG_EXTRA_ARGS="${OPTARG:-}"
+			print_opt_help "-e ARGS: Extra ffmpeg args to get appended to regular args."
+			;;
+		t)
+			default="/dev/shm"
+			TMP_DIR="${OPTARG:-$default}"
+			print_opt_help "-t DIR: TMP directory to store intermediates." "$default"
+			;;
+		k)
+			CLEANUP=0
+			print_opt_help "-k: Flag to keep the TMP directory." "off"
+			;;
+		d)
+			DEBUG=1
+			print_opt_help "-d: Flag to print debug messages." "off"
+			;;
+		h) ;;
+	esac
+done
+
+
+[[ PRINT_HELP_AND_EXIT -ne 0 ]] && exit 255;
+
+
+SOURCE_FILES=() # poplated below
 SOURCE=${1:-"."} # default: current dir
 BASE_DIR=$(dirname "$SOURCE")
-DEBUG=${DEBUG:-0}
-SOURCE_FILES=() # poplated below
-CLEANUP=1
-
-
 if ! [[ -d "$SOURCE" || -f $SOURCE ]]; then
 	echo Source file or folder does not exist: "$SOURCE"
 	exit 1
 fi
 
-
-while getopts "f:t:d:r" o; do
-	case "$o" in
-		f)
-			FFMPEG_ARGS_EXTRA="$OPTARG"
-			;;
-		t)
-			TMP_DIR="$OPTARG"
-			;;
-		d)
-			DEBUG=1
-			;;
-		r)
-			CLEANUP=0
-			;;
-	esac
-done
 
 
 on_exit() {
