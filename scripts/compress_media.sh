@@ -13,6 +13,7 @@ SOURCE=${1:-"."} # default: current dir
 BASE_DIR=$(dirname "$SOURCE")
 DEBUG=${DEBUG:-0}
 SOURCE_FILES=() # poplated below
+CLEANUP=1
 
 
 if ! [[ -d "$SOURCE" || -f $SOURCE ]]; then
@@ -21,7 +22,7 @@ if ! [[ -d "$SOURCE" || -f $SOURCE ]]; then
 fi
 
 
-while getopts "f:t:d" o; do
+while getopts "f:t:d:r" o; do
 	case "$o" in
 		f)
 			FFMPEG_ARGS_EXTRA="$OPTARG"
@@ -32,13 +33,20 @@ while getopts "f:t:d" o; do
 		d)
 			DEBUG=1
 			;;
+		r)
+			CLEANUP=0
+			;;
 	esac
 done
 
 
-on_exit(){
-	echo Cleaning up tmp dir: "${TMP_DIR:-''}"
-	test -d "${TMP_DIR:-''}" && rm -rf "$TMP_DIR"
+on_exit() {
+	if [[ $CLEANUP -ne 0 ]]; then
+		echo Cleaning up tmp dir: "${TMP_DIR:-''}"
+		test -d "${TMP_DIR:-''}" && rm -rf "$TMP_DIR"
+	else
+		echo Retaining tmp dir: "${TMP_DIR:-''}"
+	fi
 }
 trap on_exit EXIT
 TMP_DIR="$(mktemp -dp ${TMP_DIR:-/dev/shm})"
