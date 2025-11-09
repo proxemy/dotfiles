@@ -6,11 +6,8 @@
 
 set -euo pipefail
 
-# TODO: renice just before ffmpeg exec
-renice -n 19 -p $BASHPID
 
-
-OPT_FLAGS="rfetkdh"
+OPT_FLAGS="rfetkvdph"
 
 # default option values
 RECURSIVE=0
@@ -20,11 +17,13 @@ TMP_DIR="/dev/shm"
 KEEP_TMP_DIR=0
 VERBOSE=0
 DRY_RUN=0
+PEDANTIC=0
 PRINT_HELP_AND_EXIT=0
 
 # runtime variables populate below
 SOURCE=""
 SOURCE_FILES=() # list of single files
+FAILED_FILES=()
 
 
 # init help display
@@ -83,6 +82,10 @@ while getopts $OPT_FLAGS o; do
 			print_opt_help "-d: Flag for a dry run that does not replace files." "$DRY_RUN"
 			DRY_RUN=1
 			;;
+		p)
+			print_opt_help "-p: Pedantic flag. Exit on first ffmpeg error." "$PEDANTIC"
+			PEDANTIC=1
+			;;
 		h) ;;
 	esac
 done
@@ -127,7 +130,6 @@ elif [[ -d "$SOURCE" ]]; then
 	while IFS= read -r -d $'\0'; do
 		source_file="$REPLY"
 		mime_type=$(file --mime-type "$source_file")
-		#echo SRC: "$source_file" MIME: "$mime_type"
 		if [[ "$mime_type" =~ :\ image|:\ video ]]; then
 			SOURCE_FILES+=("$source_file")
 		fi
@@ -141,14 +143,13 @@ fi
 
 if [[ ${#SOURCE_FILES[@]} -le 0 ]]; then
 	echo No viable image candidates found
-	exit 1
+	exit 0
 fi
 
 echo Found ${#SOURCE_FILES[@]} valid targets
 read -p "List candidates? [y/N]" -a cont -n 1
 if [[ "${cont:-"N"}" =~ ^Y|y$ ]]; then
 	printf '%s\n' "${SOURCE_FILES[@]}"
-	#echo -e "\n"${SOURCE_FILES[@]}
 	echo
 fi
 
@@ -157,46 +158,50 @@ if ! [[ "${cont:-"Y"}" =~ ^Y|y$ ]]; then
 	exit 0
 fi
 
-
+# Process all file candidates
 FFMPEG_LOGLEVEL="error"
 if [[ $VERBOSE -ne 0 ]]; then
 	FFMPEG_LOGLEVEL="info"
 fi
 
-FFMPEG_ARGS="-crf 23 -qscale:v 1.5 ${FFMPEG_ARGS_EXTRA:-}"
+FFMPEG_ARGS="$FFMPEG_ARGS $FFMPEG_EXTRA_ARGS"
+
+renice -n 19 -p $BASHPID
 
 
 for src_f in "${SOURCE_FILES[@]}"; do
-
-	if ! [[ -f "$src_f" ]]; then
-		echo FATAL error, found source file does not exists: "$src_f"
-		exit 1
-	fi
 
 	echo -n Processing: "$src_f"
 
 	base_name=$(basename "$src_f")
 
-	if ! [[ "$base_name" =~ \..{3,4} ]]; then
-		echo -e "no file extension found, but required by ffmpeg\n---SKIPPING FILE: ${base_name}"
+	tmp_f=$(mktemp -p "$TMP_DIR" -t "XXXXX.")"$base_name"
+
+	[[ $PEDANTIC -eq 0 ]] && set +e
+	ffmpeg -y -loglevel "$FFMPEG_LOGLEVEL" -i "$src_f" $FFMPEG_ARGS "$tmp_f"
+	[[ $PEDANTIC -eq 0 ]] && set -e
+
+
+	if [[ $? -ne 0 ]]; then
+		echo ffmpeg failed on: "$src_f"
+		[[ $PEDANTIC -ne 0 ]] && exit 1
+		FAILED_FILES+=("Non-zero ffmpeg return on: $src_f")
 		continue
 	fi
 
-	tmp_f=$(mktemp -p "$TMP_DIR" -t "XXXXX.")"$base_name"
-
-	ret=$(ffmpeg -y -loglevel "$FFMPEG_LOGLEVEL" -i "$src_f" $FFMPEG_ARGS "$tmp_f")
 
 	size_src=$(du -b "$src_f" | cut -f1)
 	size_tmp=$(du -b "$tmp_f" | cut -f1)
 
-	if [[ $ret -ne 0 ]] || [[ $size_tmp -le 0 ]]; then
-		echo -e \nffmpeg failed. Exiting.
-		exit 1
+	if [[ $size_tmp -le 0 ]]; then
+		FAILED_FILES+=("Zero size convert file from: $src_f")
+		continue
 	fi
+
 
 	if [[ $size_tmp -lt $size_src ]]; then
 		if [[ $VERBOSE -ne 0 ]]; then
-			echo -n " -> size (old/new): $size_src / $size_tmp"
+			echo -n " -> size (old/new): $size_src / $size_tmp "
 		fi
 		if [[ $DRY_RUN -ne 0 ]]; then
 			echo "... skipping replacement!"
@@ -208,5 +213,12 @@ for src_f in "${SOURCE_FILES[@]}"; do
 		echo
 	fi
 done
+
+if ! [[ -z ${FAILED_FILES[@]} ]]; then
+	echo "Failed files:"
+	for ff in "${FAILED_FILES[@]}"; do
+		echo "$ff"
+	done
+fi
 
 echo Done
