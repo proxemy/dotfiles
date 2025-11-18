@@ -11,7 +11,8 @@ OPT_FLAGS="rfetkvdph"
 
 # default option values
 RECURSIVE=0
-FFMPEG_ARGS="-crf 23 -qscale:v 1.5"
+# crf = constant rate factor, qscale = quality scale for VBR encodings
+FFMPEG_ARGS="" #"-crf 23 -qscale:v 1.5"
 FFMPEG_EXTRA_ARGS=""
 TMP_DIR="/dev/shm"
 KEEP_TMP_DIR=0
