@@ -8,4 +8,5 @@
     "editor.renderWhitespace": "all",
     "editor.insertSpaces": false,
     "extensions.ignoreRecommendations": true,
+    "explorer.confirmDelete": false,
 }
