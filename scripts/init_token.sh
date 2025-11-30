@@ -1,64 +1,42 @@
-#!/usr/bin/env rbash
+#!/usr/bin/env bash
 
-set -Eeuo pipefail
-
-
-usage() { echo "USAGE: ./$(basename $0) [token.enc] [token.dec]"; }
-trap usage ERR EXIT
-[ $# -ne 2 ] && exit 1
-
-readonly enc=$1
-readonly dec=$2
-
-readonly SUDOERS_FILE=/etc/sudoers.d/keepassxc_$USER
-readonly CRYPT_MAPPER_DEVICE=/dev/mapper/tmp_dev
+set -euo pipefail
 
 
-[ ! -f "$enc" ] \
-&& echo "Couldn't find encrypted token file:" "$enc" && exit 1
-[ -f "$dec" ] \
-&& echo "Target decrypted token file already exists:" "$dec" && exit 1
-[ -f "$SUDOERS_FILE" ] \
-&& echo "Excepted keepassxc sudoers file to not exist:" "$SUDOERS_FILE" && exit 1
-[ -f "$CRYPT_MAPPER_DEVICE" ] \
-&& echo "cryptsetup mapper device busy:" "$CRYPT_MAPPER_DEVICE" && exit 1
+test -f "${1:-$ARG_1_INPUT_TOKEN_NOT_DEFINED}"
+test ! -f "${2:-$ARG_2_OUTPUT_TOKEN_NOT_DEFINED}"
+
+SALT="0Ghra9a+OOBaysAjBG084VFqBGjnPGraS0w2ODxzRZ0Ygze6oyeX2yOmfbMKJ7wW0qpGKL7qptQM7F0MNkgez2CbC+7aLhrQOHKtB13UDLHhQemIQcoa8HIWT8UzNtkIG4IZlXS+RtuFB6oltF2+6DzkmQ0sggv1XMSAabTFHFU="
+read -rp "Enter password:"
+PW="$REPLY"
+echo
 
 
-trap 'echo Missing Dependency!' ERR
-type keepassxc
-type cryptsetup
-type sudo
-trap -
+sha_digest_binary() { echo -ne $(sha512sum --binary "$1" | cut -f1 -d' ' | sed 's/../\\x&/g'); }
+
+sha_pw() { sha_digest_binary <(printf "$PW"); }
+sha_salt() { sha_digest_binary <(printf "$SALT" | base64 --decode); }
+sha_token() { sha_digest_binary "$1"; }
 
 
-on_exit()
-{
-	echo Cleanup
-	sudo cryptsetup close $(basename "$CRYPT_MAPPER_DEVICE")
-	sudo -K
-}
-trap on_exit EXIT
+sha_digest_binary <(
+	sha_pw;
+	sha_salt;
+	sha_pw;
+	sha_token "$1";
+) > "$2"
+
+# inflate the output to 128 bytes
+sha_digest_binary <(
+	sha_token "$1";
+	sha_pw;
+	sha_salt;
+	sha_pw;
+) >> "$2"
 
 
-#if ! getent group keepassxc; then
-sudo addgroup keepassxc || true
+echo "Result:"
+sha256sum "$2"
 
-echo "$USER $HOSTNAME=(:keepassxc) NOPASSWD:NOEXEC:NOFOLLOW: /usr/bin/keepassxc" \
-| sudo tee "$SUDOERS_FILE"
-
-sudo visudo -sc "$SUDOERS_FILE" \
-|| sudo rm "$SUDOERS_FILE"
-
-sudo chmod a-rwx,ug+r "$SUDOERS_FILE"
-sudo chown root:root "$SUDOERS_FILE"
-
-sudo cryptsetup plainOpen \
-	-c aes-cbc-essiv:sha256 \
-	-s 256 \
-	-r -d - "$enc" $(basename "$CRYPT_MAPPER_DEVICE")
-
-
-sudo cp "$CRYPT_MAPPER_DEVICE" "$dec"
-sudo echo Key file sha256 hash: $(sudo sha256sum "$dec")
-sudo chmod a-rwx,g+r "$dec"
-sudo chown root:keepassxc "$dec"
+chmod a-rwx,g+r "$2"
+sudo chown root:keepassxc "$2"
