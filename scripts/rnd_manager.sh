@@ -37,7 +37,7 @@ fi
 
 
 echo -n "Analyzing source file "
-hex_dump=$(xxd -p "$SOURCE" | tr -d '\n')
+hex_dump=$(od -An -tx1 "$SOURCE" | tr -d ' \n')
 header_hash_size=32
 for i in $(seq 0 500); do
 	echo -n "."
