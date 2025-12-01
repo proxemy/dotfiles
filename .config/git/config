@@ -8,6 +8,10 @@
 	co = checkout
 [init]
 	defaultBranch = main
-
 [includeIf "gitdir:~/.dotfiles"]
 	path = ~/.config/gitconfig/dotfiles
+[safe]
+	# Disable ownership mismatch warning of NAS'ed repos.
+	# This is a security risk! Git traverses through folders in search for a .git
+	# folder. A mallicious partent .git folder could extort secrets (stored with git?).
+	directory = *
