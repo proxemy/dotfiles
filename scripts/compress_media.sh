@@ -147,7 +147,8 @@ if [[ ${#SOURCE_FILES[@]} -le 0 ]]; then
 	exit 0
 fi
 
-echo Found ${#SOURCE_FILES[@]} valid targets
+CNT=${#SOURCE_FILES[@]}
+echo Found $CNT valid targets
 read -p "List candidates? [y/N]" -a cont -n 1
 if [[ "${cont:-"N"}" =~ ^Y|y$ ]]; then
 	printf '%s\n' "${SOURCE_FILES[@]}"
@@ -170,9 +171,11 @@ FFMPEG_ARGS="$FFMPEG_ARGS $FFMPEG_EXTRA_ARGS"
 renice -n 19 -p $BASHPID
 
 
+cnt=0
 for src_f in "${SOURCE_FILES[@]}"; do
+	((cnt+=1))
 
-	echo -n Processing: "$src_f"
+	echo -n "[$cnt/$CNT]: $src_f"
 
 	base_name=$(basename "$src_f")
 
@@ -214,6 +217,8 @@ for src_f in "${SOURCE_FILES[@]}"; do
 		echo
 	fi
 done
+
+echo All conversions done!
 
 if ! [[ -z ${FAILED_FILES[@]} ]]; then
 	echo "Failed files:"
