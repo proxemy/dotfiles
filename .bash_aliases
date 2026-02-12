@@ -54,6 +54,7 @@ alias ssh-shell='PS1="\[\e[1;30;41m\]SSH\[\e[0m\]:"$PS1; eval $(ssh-agent); trap
 alias dotfiles='env git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias beep='$(speaker-test -t sine -f 1000 -l 1 & sleep .2 && kill -9 $!)'
 alias rsync-to-raid='rsync --verbose --archive --no-owner --no-group --progresss'
+alias requirements-nix-shell='nix-shell $(sed "s/^/-p python3Packages./g" requirements.txt)'
 
 # observability
 alias ml='mount | grep -vE "(^nsfs|\s+on\s+/snap/)" | column -t'
