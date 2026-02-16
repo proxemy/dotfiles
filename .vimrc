@@ -177,30 +177,52 @@ let g:netrw_sizestyle="H"
 " only turn on colors if terminal supports it
 if &t_Co > 2 || has('gui_rendering')
 
-	" set the color column to show/delimit line length
-	set colorcolumn=80
-	highlight ColorColumn ctermbg=darkgrey guibg=darkgrey cterm=reverse gui=reverse
-
 	" colors
+	colorscheme habamax
 	set background=dark " dark color scheme
 	set hlsearch		" highlight search results
 	syntax enable		" syntax highlighting without overwriting existing settings
 
+	" set the color column to show/delimit line length
+	set colorcolumn=80
+	highlight ColorColumn
+		\ term=reverse cterm=reverse gui=reverse
+		\ ctermbg=DarkGray guibg=DarkGray
+
+	" normal text background
+	hi Normal ctermbg=Black guibg=Black
+
 	" custom highlighting
 	" with ':highlight', you can see all possible highlight-groups
-	hi LineNr term=bold cterm=bold ctermfg=DarkYellow
-	hi Comment ctermfg=DarkCyan
+	hi LineNr
+		\ term=bold cterm=bold gui=bold
+		\ ctermfg=DarkYellow guifg=DarkYellow
+
+	hi Comment ctermfg=DarkGray guifg=DarkGray
+
 	hi clear Error
-	hi Error term=underline cterm=underline ctermfg=Red
-	hi Folded term=underline ctermfg=White ctermbg=DarkGray
-	hi NonText term=bold cterm=bold ctermfg=DarkGray
-	hi SpecialKey term=NONE cterm=NONE ctermfg=DarkGray
+	hi Error
+		\ term=underline cterm=underline gui=underline
+		\ ctermfg=Red guifg=Red
+
+	hi Folded
+		\ term=underline cterm=underline gui=underline
+		\ ctermfg=Black ctermbg=DarkGray
+		\ guifg=Black guibg=DarkGray
+
+	hi NonText
+		\ term=bold cterm=bold gui=bold
+		\ ctermfg=DarkGray guifg=DarkGray
+
+	hi SpecialKey term=NONE cterm=NONE gui=NONE ctermfg=DarkGray guifg=DarkGray
+
 	hi clear Search
-	hi Search term=reverse cterm=reverse
+	hi Search term=reverse cterm=reverse gui=reverse
 
 	" enable a cursorline when in insert mode
 	set cursorline
-	hi CursorLine term=None cterm=None ctermbg=None
+	hi CursorLine term=None cterm=None ctermbg=None guibg=None
+
 	"autocmd InsertEnter * highlight CursorLine cterm=Underline
 	"autocmd InsertLeave * highlight CursorLine cterm=None
 endif
