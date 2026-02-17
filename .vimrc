@@ -13,7 +13,7 @@ let s:plug_dirs = {
 	\ 'syntastic':  s:plug_home . 'syntastic',
 \ }
 function! s:plug_exists(name)
-	return isdirectory(s:plug_dirs[a:name])
+	return isdirectory(s:plug_dirs[a:name]) || stridx(&runtimepath, a:name)
 endfunction
 
 
