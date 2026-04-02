@@ -92,7 +92,7 @@ set foldtext=MyFoldText()
 
 " nvim-treesitter folding or by fold by indentation
 "if s:plug_exists('nvim-treesitter')
-	set foldmethod=expr
+	set foldmethod=syntax
 	set foldexpr=nvim_treesitter#foldexpr()
 "else
 "	echom "nvim-treesitter plugin not found."
