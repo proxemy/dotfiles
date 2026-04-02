@@ -1,32 +1,28 @@
 set encoding=utf-8
 set visualbell
 
+
 """"""""""""""""""""""""""
 " Vundle - Plugin Manager
 """"""""""""""""""""""""""
 
 let s:plug_home = expand('~/.vim/bundle/')
 let s:plug_dirs = {
-	\ 'vundle':		s:plug_home . 'Vundle.vim',
-	\ 'YCM':		s:plug_home . 'YouCompleteMe',
-	\ 'tree-sitter':s:plug_home . 'nvim-treesitter',
-	\ 'syntastic':  s:plug_home . 'syntastic',
+	\ 'vundle': s:plug_home . 'Vundle.vim',
+	\ 'YCM': s:plug_home . 'YouCompleteMe',
+	\ 'nvim-treesitter': s:plug_home . 'nvim-treesitter',
+	\ 'syntastic': s:plug_home . 'syntastic',
 \ }
 function! s:plug_exists(name)
-	return isdirectory(s:plug_dirs[a:name]) || stridx(&runtimepath, a:name)
+	return isdirectory(s:plug_dirs[a:name]) || stridx(&runtimepath, a:name) >= 0
 endfunction
 
 
-if ! s:plug_exists('vundle')
-
-	if executable('git')
-		echom "Cloning Vundle from git repository. Use ':PluginInstall' to fetch the plugins."
-		call system('git clone https://github.com/VundleVim/Vundle.vim.git ' . s:plug_dirs['vundle'])
-	else
-		echoerr "Can't clone Vundle! git is not installed."
-	endif
-
-else
+" To install vundle and plugins:
+" git clone https://github.com/VundleVim/Vundle.vim.git " . s:plug_dirs['vundle']
+" ':PluginInstall'"
+if s:plug_exists('vundle')
+	echo "Vundle found"
 
 	set nocompatible	" be iMproved, required as first command
 	filetype off		" required
@@ -58,7 +54,6 @@ else
 
 	" All of your Plugins must be added before the following line
 	call vundle#end()	" required
-
 endif
 
 
@@ -95,14 +90,15 @@ function MyFoldText()
 endfunction
 set foldtext=MyFoldText()
 
-" tree-sitter folding or by fold by indentation
-if s:plug_exists('tree-sitter')
+" nvim-treesitter folding or by fold by indentation
+"if s:plug_exists('nvim-treesitter')
 	set foldmethod=expr
 	set foldexpr=nvim_treesitter#foldexpr()
-else
-	echom "tree-sitter plugin not found."
-	set foldmethod=indent
-endif
+"else
+"	echom "nvim-treesitter plugin not found."
+"	set foldmethod=indent
+"endif
+
 set nofoldenable	" dont fold by default
 set foldcolumn=3	" shows a fold column on the lest (symbols: +. -, |)
 set fillchars=fold:\ " disable 'fillchars' in 'foldtext' lines
@@ -126,8 +122,8 @@ set wildmode=full
 
 
 " tabs/spaces indentation
-set tabstop=4		" tabstop = tabwidth
-set shiftwidth=4	" one foldlevel = 4 chars (tab_size=8 wont fold properly)
+set tabstop=2 " tabstop = tabwidth
+"set shiftwidth=4 " one foldlevel = 4 chars (tab_size=8 wont fold properly)
 "set softtabstop=0
 set noexpandtab
 
