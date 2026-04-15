@@ -82,6 +82,7 @@ set more			" show '--more--' in listings
 "set fixeol			" fix missing eol at the end of file
 set relativenumber	" relative line numbers
 set hidden			" show hidden buffers
+set nomodeline " modelines are autocmd comments in files
 
 " This function delivers the string to be displayed over folded lines
 function MyFoldText()
