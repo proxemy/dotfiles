@@ -24,8 +24,8 @@ endfunction
 if s:plug_exists('vundle')
 	echo "Vundle found"
 
-	set nocompatible	" be iMproved, required as first command
-	filetype off		" required
+	set nocompatible " be iMproved, required as first command
+	filetype off " required
 
 	" set the runtime path to include Vundle and initialize
 	set rtp+=~/.vim/bundle/Vundle.vim
@@ -53,7 +53,7 @@ if s:plug_exists('vundle')
 	Plugin 'https://github.com/rust-lang/rust.vim'
 
 	" All of your Plugins must be added before the following line
-	call vundle#end()	" required
+	call vundle#end() " required
 endif
 
 
@@ -62,26 +62,26 @@ endif
 "   Settings
 """"""""""""""""""""""""""
 
-set incsearch		" interactive search
-set nocompatible	" disable vi compatibility
-set number			" show line numbers
-set backspace=indent,eol,start	" allows BS to delete these characters
-set autoindent		" use indentation of the previous line
+set incsearch " interactive search
+set nocompatible " disable vi compatibility
+set number " show line numbers
+set backspace=indent,eol,start " allows BS to delete these characters
+set autoindent " use indentation of the previous line
 set nocindent nosmartindent " disable dreaded comment unindentation
 set history=200
 set undolevels=200
-set ruler			" show cursor position in the lower right
-set showcmd			" show command while typing
-"filetype plugin indent on	" recognizing file types, loads plugins (if exit) and detects indentation style
-"set spell			" spell checker (en)
-"set spl=en			" spell check language
-set smd				" show mode (normal, insert, replace, visual) when switching
-set verbose=0		" verboselevel to show startup/exit vim processes, default: 11.
-set more			" show '--more--' in listings
-"set eol				" puts an eol at the last line in file
-"set fixeol			" fix missing eol at the end of file
-set relativenumber	" relative line numbers
-set hidden			" show hidden buffers
+set ruler " show cursor position in the lower right
+set showcmd " show command while typing
+"filetype plugin indent on " recognizing file types, loads plugins (if exit) and detects indentation style
+"set spell " spell checker (en)
+"set spl=en " spell check language
+set smd " show mode (normal, insert, replace, visual) when switching
+set verbose=0 " verboselevel to show startup/exit vim processes, default: 11.
+set more " show '--more--' in listings
+"set eol " puts an eol at the last line in file
+"set fixeol " fix missing eol at the end of file
+set relativenumber " relative line numbers
+set hidden " show hidden buffers
 set nomodeline " modelines are autocmd comments in files
 
 " This function delivers the string to be displayed over folded lines
@@ -96,28 +96,28 @@ set foldtext=MyFoldText()
 	set foldmethod=syntax
 	set foldexpr=nvim_treesitter#foldexpr()
 "else
-"	echom "nvim-treesitter plugin not found."
-"	set foldmethod=indent
+" echom "nvim-treesitter plugin not found."
+" set foldmethod=indent
 "endif
 
-set nofoldenable	" dont fold by default
-set foldcolumn=3	" shows a fold column on the lest (symbols: +. -, |)
+set nofoldenable " dont fold by default
+set foldcolumn=3 " shows a fold column on the lest (symbols: +. -, |)
 set fillchars=fold:\ " disable 'fillchars' in 'foldtext' lines
-set formatoptions=jl	" Formating option, see :help fo-table for details
+set formatoptions=jl " Formating option, see :help fo-table for details
 
-set bs=2		" backspacing behaviour. 2 = backspace over indent, eol, start
-set showtabline=2	" always show tabbar
-set tabpagemax=10	" max tabs to show. use :next or :last to navigate to exceeding tabs
-set nowrap			" disable line break
-"set sidescroll=10	" number of columns to scroll horizontally, good for slow terminals
-set sidescrolloff=10	" number of columns to keep on screen borders while horizontally scrolling
-set scrolloff=3		" number of linse that will be kept while vertical scrolling
+set bs=2 " backspacing behaviour. 2 = backspace over indent, eol, start
+set showtabline=2 " always show tabbar
+set tabpagemax=10 " max tabs to show. use :next or :last to navigate to exceeding tabs
+set nowrap " disable line break
+"set sidescroll=10 " number of columns to scroll horizontally, good for slow terminals
+set sidescrolloff=10 " number of columns to keep on screen borders while horizontally scrolling
+set scrolloff=3 " number of linse that will be kept while vertical scrolling
 
 
 
 " User interface
 set wildchar=<TAB>
-set wildmenu	" ':' menu with 'wildchar' (TAB)
+set wildmenu " ':' menu with 'wildchar' (TAB)
 set wildmode=full
 
 
@@ -177,8 +177,8 @@ if &t_Co > 2 || has('gui_rendering')
 	" general colors
 	colorscheme habamax
 	set background=dark " dark color scheme
-	set hlsearch		" highlight search results
-	syntax enable		" syntax highlighting without overwriting existing settings
+	set hlsearch " highlight search results
+	syntax enable " syntax highlighting without overwriting existing settings
 
 	" set the color column to show/delimit line length
 	set colorcolumn=80
@@ -190,7 +190,7 @@ endif
 
 
 """"""""""""""""""""""""""
-"	Plugin Config
+" Plugin Config
 """"""""""""""""""""""""""
 
 if s:plug_exists('YCM')
@@ -234,7 +234,7 @@ autocmd BufEnter,BufWritePost * call Get_git_branch()
 
 if has('statusline')
 	highlight StatusLineMiddle cterm=underline
-	set laststatus=2		" always show a status line
+	set laststatus=2 " always show a status line
 	set stl=[%Y,%{&fileencoding?&fileencoding:&encoding}] " file type/enc
 	set stl+=<%{g:git_branch}>
 	set stl+=%#StatusLineMiddle#%=%0*%l/%L:%c\ %p%% " shows file location stuff, right
@@ -243,7 +243,7 @@ endif
 
 
 """"""""""""""""""""""""""
-"	MISC
+" MISC
 """"""""""""""""""""""""""
 
 " enalbe mouse fetures
@@ -260,8 +260,8 @@ endif
 
 
 
-" set exrc		" vim executes a local .vimrc file for project specific settings
-set secure		" limit the autoexec feature from "exrc" for security considerations
+" set exrc " vim executes a local .vimrc file for project specific settings
+set secure " limit the autoexec feature from "exrc" for security considerations
 
 " you can enter ":make" to execute make in the current directory.
 " this specifies a target directory
@@ -276,8 +276,8 @@ noremap <Leader>E :qa!<CR> " quit all windows
 vnoremap <Leader>s :sort<CR>
 
 " easier moving/indenting of lines/blocks
-vnoremap < <gv	" right
-vnoremap > >gv	" left
+vnoremap < <gv " right
+vnoremap > >gv " left
 
 " Automatic relaoding of .vimrc
 autocmd! bufwritepost ~/.vimrc source %
